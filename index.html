@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyst AI</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+    <!-- Google's Gemini AI SDK -->
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.sh/@google/generative-ai"
+        }
+    }
+    </script>
+    <style>
+        /* Custom styles for markdown tables */
+        .markdown-content table {
+            border-collapse: collapse;
+            margin: 1rem 0;
+            width: 100%;
+        }
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #4b5563;
+            padding: 0.5rem;
+        }
+        .markdown-content th {
+            background-color: #374151;
+        }
+        /* Ensure the chat container takes full height minus header and input area */
+        #chat-container {
+            height: calc(100vh - 140px);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white flex flex-col h-screen">
+    <!-- Header -->
+    <header class="bg-slate-800/70 border-b border-slate-700 shadow-md p-4 flex items-center justify-between">
+        <div class="flex items-center">
+            <!-- Logo SVG -->
+            <svg class="w-8 h-8 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h1 class="text-xl font-bold">Analyst AI</h1>
+        </div>
+        <button id="api-key-button" class="text-sm bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded-md flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v-1l1-1 1-1-.257-.257A6 6 0 1118 8zm-6-4a1 1 0 100 2h2a1 1 0 100-2h-2z" clip-rule="evenodd" />
+            </svg>
+            Set API Key
+        </button>
+    </header>
+    
+    <!-- API Key Modal (hidden by default) -->
+    <div id="api-key-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-slate-800 p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 class="text-xl font-bold mb-4">Set Your Gemini API Key</h2>
+            <p class="mb-4">Enter your Gemini API key to use the application. You can get one from <a href="https://makersuite.google.com/app/apikey" target="_blank" class="text-indigo-400 hover:text-indigo-300 underline">Google AI Studio</a>.</p>
+            <form id="api-key-form" class="space-y-4">
+                <div>
+                    <label for="api-key-input" class="block mb-1">API Key:</label>
+                    <input type="text" id="api-key-input" class="w-full bg-slate-700 border border-slate-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Paste your Gemini API key here">
+                </div>
+                <div class="flex justify-between">
+                    <button type="button" id="api-key-cancel" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-md">Cancel</button>
+                    <button type="submit" id="api-key-save" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-md">Save Key</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chat Window -->
+    <main id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4">
+        <!-- Messages will be dynamically inserted here -->
+    </main>
+
+    <!-- Input Area -->
+    <footer class="border-t border-slate-700 p-4">
+        <!-- File Preview (hidden by default) -->
+        <div id="file-preview" class="hidden mb-2 p-2 bg-slate-800 rounded flex items-center justify-between">
+            <span id="file-name" class="truncate"></span>
+            <button id="remove-file" class="ml-2 text-red-400 hover:text-red-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Input Form -->
+        <form id="chat-form" class="flex items-center space-x-2">
+            <!-- Attach File Button -->
+            <button id="attach-button" type="button" class="p-2 rounded-full hover:bg-slate-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            
+            <!-- Hidden File Input -->
+            <input type="file" id="file-input" class="hidden" accept=".pdf,.docx,.txt">
+            
+            <!-- Text Input -->
+            <input type="text" id="message-input" class="flex-1 bg-slate-800 border border-slate-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Type your message...">
+            
+            <!-- Send Button -->
+            <button type="submit" id="send-button" class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+            </button>
+        </form>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script type="module" src="./index.js"></script>
+</body>
+</html>
