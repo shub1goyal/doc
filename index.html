@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analyst AI</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Marked.js for Markdown parsing -->
@@ -22,17 +23,100 @@
             border-collapse: collapse;
             margin: 1rem 0;
             width: 100%;
+            background-color: #1f2937;
+            border-radius: 0.375rem;
+            overflow: hidden;
+            table-layout: auto;
         }
         .markdown-content th, .markdown-content td {
             border: 1px solid #4b5563;
-            padding: 0.5rem;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            vertical-align: top;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .markdown-content th {
             background-color: #374151;
+            font-weight: 600;
+            color: #f9fafb;
+            border-bottom: 2px solid #4b5563;
+            white-space: nowrap;
+        }
+        .markdown-content td {
+            background-color: #1f2937;
+            color: #d1d5db;
+            min-width: 120px;
+        }
+        .markdown-content tbody tr:nth-child(even) td {
+            background-color: #111827;
+        }
+        .markdown-content tbody tr:hover td {
+            background-color: #374151;
+        }
+        /* Handle table overflow */
+        .markdown-content {
+            overflow-x: auto;
+        }
+        .markdown-content table {
+            min-width: 100%;
+        }
+        /* Specific column sizing for better layout */
+        .markdown-content th:first-child,
+        .markdown-content td:first-child {
+            min-width: 180px;
+            font-weight: 500;
+        }
+        .markdown-content th:last-child,
+        .markdown-content td:last-child {
+            min-width: 100px;
         }
         /* Ensure the chat container takes full height minus header and input area */
         #chat-container {
             height: calc(100vh - 140px);
+        }
+        /* Custom styles for HTML content */
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.375rem;
+            margin: 0.5rem 0;
+        }
+        .markdown-content blockquote {
+            border-left: 4px solid #4f46e5;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #9ca3af;
+        }
+        /* Improve code block styling */
+        .markdown-content pre {
+            background-color: #111827;
+            border: 1px solid #374151;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .markdown-content code {
+            background-color: #374151;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+        }
+        .markdown-content pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        /* Fallback styling for improperly formatted tables */
+        .markdown-content p {
+            margin: 0.5rem 0;
+        }
+        .markdown-content p:has(br) {
+            white-space: pre-line;
+        }
+        /* Hide standalone dash lines that might appear in malformed tables */
+        .markdown-content p:has-text("---") {
+            display: none;
         }
     </style>
 </head>
@@ -48,14 +132,77 @@
             </svg>
             <h1 class="text-xl font-bold">Analyst AI</h1>
         </div>
-        <button id="api-key-button" class="text-sm bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded-md flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v-1l1-1 1-1-.257-.257A6 6 0 1118 8zm-6-4a1 1 0 100 2h2a1 1 0 100-2h-2z" clip-rule="evenodd" />
-            </svg>
-            Set API Key
-        </button>
+        <div class="flex items-center space-x-2">
+            <button id="prompt-prefix-button" class="text-sm bg-green-600 hover:bg-green-500 px-3 py-1 rounded-md flex items-center font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                </svg>
+                Prompt Prefix
+            </button>
+            <button id="reset-session-button" class="text-sm bg-red-600 hover:bg-red-500 px-3 py-1 rounded-md flex items-center font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                </svg>
+                Reset Session
+            </button>
+            <button id="api-key-button" class="text-sm bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded-md flex items-center font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 8a6 6 0 01-7.743 5.743L10 14l-1 1-1 1H6v-1l1-1 1-1-.257-.257A6 6 0 1118 8zm-6-4a1 1 0 100 2h2a1 1 0 100-2h-2z" clip-rule="evenodd" />
+                </svg>
+                Set API Key
+            </button>
+        </div>
     </header>
-    
+
+    <!-- Prompt Prefix Modal (hidden by default) -->
+    <div id="prompt-prefix-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-slate-800 p-6 rounded-lg shadow-lg max-w-2xl w-full mx-4">
+            <h2 class="text-xl font-semibold mb-4">Manage Prompt Prefixes</h2>
+            <p class="text-gray-300 mb-6">Create custom prompt prefixes that will be automatically added to your messages. This helps maintain consistent context and instructions for the AI.</p>
+            
+            <!-- Current Prefixes List -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-3">Saved Prefixes:</h3>
+                <div id="prefix-list" class="space-y-2 max-h-40 overflow-y-auto">
+                    <!-- Prefixes will be populated here -->
+                </div>
+            </div>
+            
+            <!-- Add/Edit Prefix Form -->
+            <form id="prefix-form" class="space-y-4">
+                <div>
+                    <label for="prefix-name" class="block mb-1 font-semibold">Prefix Name:</label>
+                    <input type="text" id="prefix-name" class="w-full bg-slate-700 border border-slate-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="e.g., Code Review, Document Analysis">
+                </div>
+                <div>
+                    <label for="prefix-content" class="block mb-1 font-semibold">Prefix Content:</label>
+                    <textarea id="prefix-content" rows="3" class="w-full bg-slate-700 border border-slate-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="e.g., Please review this code for best practices and suggest improvements..."></textarea>
+                </div>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" id="auto-apply-prefix" class="w-4 h-4 text-green-600 bg-slate-700 border-slate-600 rounded focus:ring-green-500">
+                        <label for="auto-apply-prefix" class="text-sm text-gray-300">Auto-apply this prefix to new messages</label>
+                    </div>
+                    <div class="space-x-2">
+                        <button type="button" id="clear-prefix-form" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-md font-semibold">Clear</button>
+                        <button type="submit" id="save-prefix" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-md font-semibold">Save Prefix</button>
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Modal Actions -->
+            <div class="flex justify-between mt-6 pt-4 border-t border-slate-600">
+                <div class="flex items-center space-x-2">
+                    <label for="active-prefix-select" class="text-sm font-semibold">Active Prefix:</label>
+                    <select id="active-prefix-select" class="bg-slate-700 border border-slate-600 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <option value="">None</option>
+                    </select>
+                </div>
+                <button type="button" id="close-prefix-modal" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-md font-semibold">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- API Key Modal (hidden by default) -->
     <div id="api-key-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-slate-800 p-6 rounded-lg shadow-lg max-w-md w-full">
@@ -67,28 +214,69 @@
                     <input type="text" id="api-key-input" class="w-full bg-slate-700 border border-slate-600 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Paste your Gemini API key here">
                 </div>
                 <div class="flex justify-between">
-                    <button type="button" id="api-key-cancel" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-md">Cancel</button>
-                    <button type="submit" id="api-key-save" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-md">Save Key</button>
+                    <button type="button" id="api-key-cancel" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-md font-semibold">Cancel</button>
+                    <button type="submit" id="api-key-save" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-md font-semibold">Save Key</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Chat Window -->
-    <main id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4">
+    <main id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4 relative">
+        <!-- Drag and Drop Overlay -->
+        <div id="drag-overlay" class="hidden absolute inset-0 bg-indigo-600/20 border-2 border-dashed border-indigo-400 rounded-lg flex items-center justify-center z-10">
+            <div class="text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+                <p class="text-lg font-semibold text-indigo-400">Drop your files here</p>
+                <p class="text-sm text-indigo-300">Supports PDF, DOCX, TXT, HTML files</p>
+            </div>
+        </div>
         <!-- Messages will be dynamically inserted here -->
     </main>
 
     <!-- Input Area -->
     <footer class="border-t border-slate-700 p-4">
-        <!-- File Preview (hidden by default) -->
-        <div id="file-preview" class="hidden mb-2 p-2 bg-slate-800 rounded flex items-center justify-between">
-            <span id="file-name" class="truncate"></span>
-            <button id="remove-file" class="ml-2 text-red-400 hover:text-red-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <!-- Active Prefix Indicator (hidden by default) -->
+        <div id="active-prefix-indicator" class="hidden mb-2 p-2 bg-green-900/30 border border-green-600 rounded flex items-center justify-between">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-sm text-green-300">Active prefix: <span id="active-prefix-name" class="font-semibold"></span></span>
+            </div>
+            <button id="remove-active-prefix" class="ml-2 text-green-400 hover:text-green-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
             </button>
+        </div>
+        <!-- File Preview (hidden by default) -->
+        <div id="file-preview" class="hidden mb-2">
+            <div class="p-2 bg-slate-800 rounded">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-semibold text-gray-300">Selected Files:</span>
+                    <button id="remove-all-files" class="text-red-400 hover:text-red-300 text-sm">
+                        Clear All
+                    </button>
+                </div>
+                <div id="file-list" class="space-y-1">
+                    <!-- Files will be listed here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Large File Processing Progress (hidden by default) -->
+        <div id="file-processing-progress" class="hidden mb-2 p-3 bg-blue-900/30 border border-blue-600 rounded">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-semibold text-blue-300">Processing large file...</span>
+                <span id="progress-text" class="text-sm text-blue-400">0%</span>
+            </div>
+            <div class="w-full bg-blue-900 rounded-full h-2">
+                <div id="progress-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p class="text-xs text-blue-300 mt-1">File is over 20MB and will be processed in chunks for optimal performance.</p>
         </div>
 
         <!-- Input Form -->
@@ -101,10 +289,37 @@
             </button>
             
             <!-- Hidden File Input -->
-            <input type="file" id="file-input" class="hidden" accept=".pdf,.docx,.txt">
+            <input type="file" id="file-input" class="hidden" accept=".pdf,.docx,.txt,.html" multiple>
             
             <!-- Text Input -->
             <input type="text" id="message-input" class="flex-1 bg-slate-800 border border-slate-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Type your message...">
+            
+            <!-- Quick Prompt Selector -->
+            <div class="relative">
+                <button id="quick-prompt-button" type="button" class="p-2 rounded-full hover:bg-slate-700 relative" title="Quick Prompt Selection">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <!-- Dropdown Menu -->
+                <div id="quick-prompt-dropdown" class="hidden absolute bottom-full right-0 mb-2 w-64 bg-slate-700 border border-slate-600 rounded-md shadow-lg z-20">
+                    <div class="p-2 border-b border-slate-600">
+                        <p class="text-sm font-semibold text-gray-300">Quick Prompt Selection</p>
+                    </div>
+                    <div id="quick-prompt-list" class="max-h-48 overflow-y-auto">
+                        <button type="button" class="w-full text-left px-3 py-2 hover:bg-slate-600 text-sm text-gray-300" data-prefix-id="">
+                            <span class="font-semibold">None</span>
+                            <p class="text-xs text-gray-400">No prefix applied</p>
+                        </button>
+                        <!-- Prefixes will be populated here -->
+                    </div>
+                    <div class="p-2 border-t border-slate-600">
+                        <button type="button" id="manage-prefixes-link" class="w-full text-left px-2 py-1 hover:bg-slate-600 text-xs text-indigo-400">
+                            Manage Prefixes...
+                        </button>
+                    </div>
+                </div>
+            </div>
             
             <!-- Send Button -->
             <button type="submit" id="send-button" class="p-2 bg-indigo-600 rounded-full hover:bg-indigo-500">

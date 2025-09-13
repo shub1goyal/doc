@@ -1,29 +1,32 @@
-# Analyst AI - Document Analysis Chat App
+# Analyst AI - Document Analysis Chat Application
 
-Analyst AI is a single-page web application that allows users to chat with an AI model, upload documents for analysis, and receive streamed, Markdown-formatted responses. This application is built with vanilla JavaScript, HTML, and Tailwind CSS.
+A streamlined AI-powered document analysis application for GitHub Pages deployment.
 
-## Features
+## 🌟 Key Features
 
-- **Full-Screen Chat Interface**: A clean, modern, dark-themed UI that occupies the entire viewport.
-- **AI Chat Functionality**:
-  - Send text messages to the AI
-  - Receive streamed responses in real-time
-  - "Typing..." indicator while waiting for responses
-- **File Upload and Analysis**:
-  - Upload PDF, DOCX, or TXT files
-  - File preview with option to remove before sending
-  - Document analysis using Google's Gemini API
-- **Dynamic Rendering**:
-  - Automatic scrolling to latest messages
-  - Markdown parsing for formatted responses (including tables)
+- **🤖 AI-Powered Analysis**: Google Gemini 2.5 Flash integration for intelligent document processing
+- **🌍 Multilingual Support**: Upload documents in any language, get analysis in English
+- **📊 Data Validation**: Detect duplicate metrics and inconsistencies across documents
+- **📄 Multiple File Formats**: PDF, DOCX, TXT, HTML support
+- **🔍 Page References**: Track exact locations of all data points
+- **⚠️ Discrepancy Detection**: Automatically identify data inconsistencies
+- **🎯 Large File Handling**: Automatic chunking for files over 20MB
 
-## Tech Stack
+## 🚀 Quick Start
 
-- **HTML**: Single index.html file for structure
-- **CSS**: Tailwind CSS via CDN for styling
-- **JavaScript**: Vanilla ES6+ modules
-- **Gemini API**: Google's generative AI SDK via ESM.sh CDN
-- **Markdown Parsing**: Marked.js for converting Markdown to HTML
+### GitHub Pages Deployment
+1. Fork this repository
+2. Enable GitHub Pages in repository settings
+3. Visit your GitHub Pages URL
+4. Click "Set API Key" and enter your Gemini API key
+
+### Local Development
+```bash
+# Simple HTTP server
+python -m http.server 8000
+# OR
+npx serve .
+```
 
 ## Setup Instructions
 
@@ -45,14 +48,7 @@ The application will prompt you to enter your API key when you first use it:
 3. Paste your API key in the dialog box
 4. Click "Save Key"
 
-Your API key will be securely stored in your browser's localStorage and will persist between sessions. You can update it at any time by clicking the "Set API Key" button again.
-
-> Note: The API key is stored only in your browser and is never sent to any server other than Google's API servers.
-
-### 3. Run the Application
-
-- Open `index.html` in a web browser
-- For the best experience, use a local development server like [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) for VS Code
+Your API key will be securely stored in your browser's localStorage and will persist between sessions.
 
 ## Usage
 
@@ -61,47 +57,36 @@ Your API key will be securely stored in your browser's localStorage and will per
    - Click the send button or press Enter
 
 2. **Upload a Document**:
-   - Click the paperclip icon
-   - Select a PDF, DOCX, or TXT file
+   - Click the paperclip icon or drag and drop a file onto the chat area
+   - Select a PDF, DOCX, TXT, or HTML file
    - The filename will appear above the input field
    - Add an optional message and send
-   - You can remove the file before sending by clicking the X button
 
-3. **View AI Responses**:
-   - AI responses are formatted with Markdown
-   - Tables and other formatted content will be properly rendered
+3. **Reset Session**:
+   - Click the "Reset Session" button in the header to clear chat history
+   - This removes all previous messages and AI context for a fresh start
+
+## Tech Stack
+
+- **HTML**: Single index.html file for structure
+- **CSS**: Tailwind CSS via CDN for styling
+- **JavaScript**: Vanilla ES6+ modules
+- **Gemini API**: Google's generative AI SDK via ESM.sh CDN
+- **Markdown Parsing**: Marked.js for converting Markdown to HTML
 
 ## Notes
 
-- The application uses the Gemini 2.5 Flash model by default, which is optimized for fast responses
-- The UI is disabled while waiting for AI responses to prevent duplicate submissions
+- The application uses the Gemini 2.5 Flash model for fast responses
+- Large files (over 20MB) are automatically split into 15MB chunks for processing
 - File uploads are converted to base64 strings and sent along with your text prompt
-- No data is stored on any server; all processing happens in your browser and through the Gemini API
+- No data is stored on any server; all processing happens in your browser
 
 ## Limitations
 
-- Maximum file size depends on your browser's limitations and the Gemini API's constraints
-- Supported file types: PDF, DOCX, and TXT
+- Maximum file size depends on browser limitations and the Gemini API constraints
+- Supported file types: PDF, DOCX, TXT, and HTML
 - Requires an internet connection to communicate with the Gemini API
-
-## Troubleshooting
-
-### API Key Errors
-
-If you see an error message about an invalid API key, this means you need to:
-
-1. Click the "Set API Key" button in the top right corner to enter a valid API key
-2. Verify that your API key is valid and has not expired
-3. Check that you have the necessary permissions for the Gemini API in your Google Cloud account
-4. Make sure you're using a key for the Gemini API (not another Google API)
-
-The application will automatically detect invalid API keys and prompt you to update them.
-
-### Other Common Issues
-
-- **File Upload Issues**: Make sure your file is one of the supported types (PDF, DOCX, TXT) and is not too large
-- **Network Errors**: Check your internet connection if you're having trouble connecting to the Gemini API
-- **Browser Compatibility**: This application works best in modern browsers (Chrome, Firefox, Edge, Safari)
+- Large file processing may take longer due to sequential chunk analysis
 
 ## License
 
