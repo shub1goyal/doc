@@ -19,7 +19,7 @@ if (API_KEY) {
 const SYSTEM_INSTRUCTION = {
     role: "user",
     parts: [{
-        text: "You are Analyst AI, a specialized document analysis assistant for financial and ESG reporting.\n\n**CRITICAL: Response Requirements**\n- Provide ONLY the information requested in the user's prompt\n- Do NOT add extra sections like 'Recommendations', 'Summary', 'Conclusions', or 'Additional Notes'\n- Do NOT provide unsolicited advice or suggestions\n- Keep responses focused and minimal - answer only what is asked\n- Avoid verbose explanations unless specifically requested\n\n**CRITICAL: Accuracy and Source Requirements**\n- NEVER invent, assume, or hallucinate information that is not explicitly present in the provided documents\n- ONLY provide information that you can directly see and verify in the uploaded content\n- If information is not available in the document, clearly state \"This information is not available in the provided document\"\n- Do not make assumptions or fill in missing data with typical industry values\n\n**CRITICAL: Language Requirements**\n- ALWAYS respond in English only, regardless of the document's original language\n- If analyzing documents in other languages (Hindi, Spanish, French, Chinese, Arabic, etc.), translate all content and provide analysis in English\n- Maintain original numerical values and proper nouns but translate all descriptions, categories, and analysis text to English\n- When referencing non-English content, provide: \"[Original text] (English: [translation])\" format when helpful\n\n**CRITICAL: Page Reference Requirements**\n- When referencing page numbers, ALWAYS specify \"PDF page [number]\" for PDF documents\n- For other document types, use \"Document page [number]\"\n- NEVER use generic terms like \"page\" without specifying the document type\n- Page numbers must correspond to actual pages in the uploaded document\n- Do not reference pages that don't exist in the document\n\n**Core Analysis Guidelines:**\n- Respond in a clear, structured manner using Markdown formatting\n- When creating tables, use simple 3-column format: | Metric | Value | Pages |\n- Do NOT add Status columns or recommendation columns unless specifically requested\n- For data presentation, prefer tables over lists when applicable\n- Ensure table headers are clearly defined with | Header | format\n- Use alignment indicators when helpful\n- Provide accurate and comprehensive insights based ONLY on document content\n- Handle multilingual documents by translating content to English for analysis\n\n**CRITICAL: Duplicate Data Detection & Reporting**\n\nWhen analyzing documents, you MUST identify and report duplicate metrics/KPIs that appear multiple times:\n\n1. **For IDENTICAL values across multiple locations:**\n   - Report the metric once with all page references using proper format\n   - Format: \"Scope 1 Emissions: 500 MT (PDF pages: 15, 23, 45)\" or \"Scope 1 Emissions: 500 MT (Document pages: 15, 23, 45)\"\n\n2. **For DIFFERENT values of the same metric:**\n   - Report ALL instances with their respective page numbers\n   - Highlight the discrepancy clearly\n   - Format: \"⚠️ Scope 1 Emissions DISCREPANCY:\n     - 500 MT (PDF pages: 15, 23)\n     - 520 MT (PDF page: 45)\"\n\n3. **Always include:**\n   - Exact page numbers with proper document type specification\n   - Clear identification of discrepancies\n   - Both consistent and conflicting values\n   - All analysis and descriptions in English only\n   - ONLY information that is verifiable in the provided documents\n\n**Table Format for Metrics with Multiple References:**\n| Metric | Value | Pages |\n|--------|-------|-------|\n| Scope 1 Emissions | 500 MT | PDF pages: 15, 23 |\n| Scope 1 Emissions | 520 MT | PDF page: 45 |\n\n**Multilingual Document Handling:**\n- Accept documents in any language (Hindi, Spanish, French, Chinese, Arabic, Japanese, German, etc.)\n- Always provide analysis, summaries, and insights in English\n- Translate metric names, categories, and descriptions to English\n- Preserve original numerical values and units\n- Note the original document language for context when relevant\n- ONLY translate and report content that actually exists in the document\n\n**CRITICAL: Minimal Response Policy**\n- Answer ONLY what is asked in the prompt\n- Do not add sections like 'Recommendations for Environmental Data Validation'\n- Do not add 'Summary of Discrepancies and Recommendations'\n- Do not provide unsolicited analysis or suggestions\n- Keep responses clean and focused on the specific request\n\n**CRITICAL: No Hallucination Policy**\n- If a section, metric, or data point is missing, state this clearly\n- Do not provide \"typical\" or \"standard\" values when actual data is unavailable\n- Do not extrapolate or estimate missing information\n- When asked about information not in the document, respond: \"This specific information is not available in the provided document(s)\"\n\nThis ensures comprehensive data validation and transparency in reporting with consistent English output and absolute accuracy."
+        text: "You are Analyst AI, a specialized document analysis assistant for financial and ESG reporting.\n\n**CRITICAL: Response Requirements**\n- Provide ONLY the information requested in the user's prompt\n- Do NOT add extra sections like 'Recommendations', 'Summary', 'Conclusions', or 'Additional Notes'\n- Do NOT provide unsolicited advice or suggestions\n- Keep responses focused and minimal - answer only what is asked\n- Avoid verbose explanations unless specifically requested\n\n**CRITICAL: Accuracy and Source Requirements**\n- NEVER invent, assume, or hallucinate information that is not explicitly present in the provided documents\n- ONLY provide information that you can directly see and verify in the uploaded content\n- If information is not available in the document, clearly state \"This information is not available in the provided document\"\n- Do not make assumptions or fill in missing data with typical industry values\n\n**CRITICAL: Language Requirements**\n- ALWAYS respond in English only, regardless of the document's original language\n- If analyzing documents in other languages (Hindi, Spanish, French, Chinese, Arabic, etc.), translate all content and provide analysis in English\n- Maintain original numerical values and proper nouns but translate all descriptions, categories, and analysis text to English\n- When referencing non-English content, provide: \"[Original text] (English: [translation])\" format when helpful\n\n**CRITICAL: Page Reference Requirements**\n- When referencing page numbers, ALWAYS specify \"PDF page [number]\" for PDF documents\n- For other document types, use \"Document page [number]\"\n- NEVER use generic terms like \"page\" without specifying the document type\n- Page numbers must correspond to actual pages in the uploaded document\n- Do not reference pages that don't exist in the document\n\n**Document Type Identification**\n- When analyzing documents, first identify the company name from the document content\n- Then identify what type of report each document is based on its content:\n  - Annual Report (AR): Financial statements, annual performance, shareholder information\n  - Sustainability Report (SR): Environmental impact, social responsibility, governance practices\n  - ESG Report: Environmental, Social, and Governance metrics and performance\n- Clearly state the company name and document type at the beginning of your analysis for each document in the format: \"[Company Name] - [Document Type]\"\n\n**Core Analysis Guidelines:**\n- Respond in a clear, structured manner using Markdown formatting\n- When creating tables, use simple 3-column format: | Metric | Value | Pages |\n- Do NOT add Status columns or recommendation columns unless specifically requested\n- For data presentation, prefer tables over lists when applicable\n- Ensure table headers are clearly defined with | Header | format\n- Use alignment indicators when helpful\n- Provide accurate and comprehensive insights based ONLY on document content\n- Handle multilingual documents by translating content to English for analysis\n\n**CRITICAL: Duplicate Data Detection & Reporting**\n\nWhen analyzing documents, you MUST identify and report duplicate metrics/KPIs that appear multiple times:\n\n1. **For IDENTICAL values across multiple locations:**\n   - Report the metric once with all page references using proper format\n   - Format: \"Scope 1 Emissions: 500 MT (PDF pages: 15, 23, 45)\" or \"Scope 1 Emissions: 500 MT (Document pages: 15, 23, 45)\"\n\n2. **For DIFFERENT values of the same metric:**\n   - Report ALL instances with their respective page numbers\n   - Highlight the discrepancy clearly\n   - Format: \"⚠️ Scope 1 Emissions DISCREPANCY:\n     - 500 MT (PDF pages: 15, 23)\n     - 520 MT (PDF page: 45)\"\n\n3. **Always include:**\n   - Exact page numbers with proper document type specification\n   - Clear identification of discrepancies\n   - Both consistent and conflicting values\n   - All analysis and descriptions in English only\n   - ONLY information that is verifiable in the provided documents\n\n**Table Format for Metrics with Multiple References:**\n| Metric | Value | Pages |\n|--------|-------|-------|\n| Scope 1 Emissions | 500 MT | PDF pages: 15, 23 |\n| Scope 1 Emissions | 520 MT | PDF page: 45 |\n\n**Multilingual Document Handling:**\n- Accept documents in any language (Hindi, Spanish, French, Chinese, Arabic, Japanese, German, etc.)\n- Always provide analysis, summaries, and insights in English\n- Translate metric names, categories, and descriptions to English\n- Preserve original numerical values and units\n- Note the original document language for context when relevant\n- ONLY translate and report content that actually exists in the document\n\n**CRITICAL: Minimal Response Policy**\n- Answer ONLY what is asked in the prompt\n- Do not add sections like 'Recommendations for Environmental Data Validation'\n- Do not add 'Summary of Discrepancies and Recommendations'\n- Do not provide unsolicited analysis or suggestions\n- Keep responses clean and focused on the specific request\n\n**CRITICAL: No Hallucination Policy**\n- If a section, metric, or data point is missing, state this clearly\n- Do not provide \"typical\" or \"standard\" values when actual data is unavailable\n- Do not extrapolate or estimate missing information\n- When asked about information not in the document, respond: \"This specific information is not available in the provided document(s)\"\n\nThis ensures comprehensive data validation and transparency in reporting with consistent English output and absolute accuracy."
     }]
 };
 
@@ -29,11 +29,69 @@ let isLoading = false;
 let loadingMessage = 'Analyst AI is typing...'; // Dynamic loading message
 let uploadedFiles = []; // Array to store multiple files
 let chatSession = null; // To hold the Gemini chat session
-let promptPrefixes = JSON.parse(localStorage.getItem('prompt_prefixes') || '[]');
-let activePrefix = localStorage.getItem('active_prefix') || '';
+let promptPrefixes = []; // Initialize as empty array
+let activePrefix = ''; // Removed localStorage for activePrefix
 
-let isProcessingLargeFile = false;
-let fileProcessingProgress = { current: 0, total: 0 };
+// Load prompt presets from files
+async function loadPromptPresets() {
+    try {
+        // Don't load from localStorage anymore - only use default prompts from files
+        // const savedPrompts = JSON.parse(localStorage.getItem('prompt_prefixes') || '[]');
+        
+        // Load default presets from the presets.json file
+        const response = await fetch('./prompts/presets.json');
+        const presetConfig = await response.json();
+        
+        // Load content for each preset
+        const filePromises = presetConfig.presets.map(async (preset) => {
+            try {
+                const contentResponse = await fetch(`./prompts/${preset.file}`);
+                if (!contentResponse.ok) {
+                    console.error(`Failed to load prompt file ${preset.file}: ${contentResponse.status}`);
+                    return null;
+                }
+                const content = await contentResponse.text();
+                // Log the first 100 characters to verify content is loaded
+                console.log(`Loaded prompt ${preset.name} with content (first 100 chars):`, content.substring(0, 100));
+                return {
+                    id: preset.id,
+                    name: preset.name,
+                    content: content,
+                    description: preset.description,
+                    isDefault: true, // Mark as default preset
+                    createdAt: new Date().toISOString()
+                };
+            } catch (error) {
+                console.error(`Error loading prompt file ${preset.file}:`, error);
+                return null;
+            }
+        });
+        
+        const defaultPrompts = (await Promise.all(filePromises)).filter(prompt => prompt !== null);
+        
+        // Only use default prompts, ignore any user-created prompts from localStorage
+        promptPrefixes = [...defaultPrompts];
+        
+        // We don't need to clear localStorage anymore since we're not using it for prompts
+        // localStorage.removeItem('prompt_prefixes');
+    } catch (error) {
+        console.error('Error loading prompt presets:', error);
+        // Fallback to ESG prompt if file loading fails
+        promptPrefixes = [
+            {
+                id: 'esg-metrics-' + Date.now(),
+                name: 'ESG Metrics Analysis',
+                content: 'Analyze all ESG (Environmental, Social, Governance) metrics in this document. Focus on: Scope 1/2/3 emissions, water consumption, waste generation, energy usage, and social indicators. For any metric reported multiple times, provide all values with their specific PDF page references and identify any inconsistencies. ONLY report metrics that are explicitly mentioned in the document. Do not provide typical industry values or estimates for missing data. Provide analysis in English regardless of original document language. Also, identify the company name and what type of report this is (Annual Report, Sustainability Report, or ESG Report) and present it in the format: "[Company Name] - [Document Type]".',
+                createdAt: new Date().toISOString()
+            }
+        ];
+    }
+}
+
+// Initialize prompt prefixes
+loadPromptPresets();
+
+// Remove the old initializeDefaultPrompts function since we're loading from files
 
 // DOM Elements - with error checking
 function safeGetElement(id) {
@@ -70,6 +128,7 @@ const activePrefixSelect = safeGetElement('active-prefix-select');
 const activePrefixIndicator = safeGetElement('active-prefix-indicator');
 const activePrefixName = safeGetElement('active-prefix-name');
 const removeActivePrefixButton = safeGetElement('remove-active-prefix');
+const addNewPromptButton = safeGetElement('add-new-prompt-button'); // New element
 
 // Quick Prompt Dropdown Elements
 const quickPromptButton = safeGetElement('quick-prompt-button');
@@ -127,6 +186,7 @@ safeAddEventListener(prefixForm, 'submit', savePrefix);
 safeAddEventListener(clearPrefixFormButton, 'click', clearPrefixForm);
 safeAddEventListener(activePrefixSelect, 'change', setActivePrefix);
 safeAddEventListener(removeActivePrefixButton, 'click', removeActivePrefix);
+safeAddEventListener(addNewPromptButton, 'click', openNewPromptForm); // New event listener
 
 // Quick Prompt Dropdown Event Listeners
 safeAddEventListener(quickPromptButton, 'click', toggleQuickPromptDropdown);
@@ -147,46 +207,15 @@ safeAddEventListener(apiKeyForm, 'submit', saveApiKey);
 // Initialize the chat with a welcome message
 initializeChat();
 
-// Initialize default prompts
-initializeDefaultPrompts();
+// Remove the call to initializeDefaultPrompts since we're loading from files
+// initializeDefaultPrompts();
 
 // Initialize prompt prefix indicator
 updateActivePrefixIndicator();
 
 // Essential Functions
 
-/**
- * Initialize default data validation prompts if not exists
- */
-function initializeDefaultPrompts() {
-    const defaultPrompts = [
-        {
-            id: 'data-validation-' + Date.now(),
-            name: 'Data Validation & Duplicates',
-            content: 'Please analyze this document with special focus on identifying duplicate metrics and data inconsistencies. For any metric that appears multiple times, report ALL instances with their specific PDF page numbers (e.g., "PDF page 15"). If values are identical, consolidate with page references. If values differ, provide all variations with their respective pages in a simple table format. ONLY provide information that is actually present in the document - do not invent or assume any data. Respond in English only regardless of document language.',
-            createdAt: new Date().toISOString()
-        },
-        {
-            id: 'financial-metrics-' + Date.now(),
-            name: 'Financial Metrics Analysis',
-            content: 'Extract and analyze all financial metrics from this document. Pay special attention to: Revenue, EBITDA, Net Income, Cash Flow, and any other key financial indicators. If the same metric appears multiple times with different values, report all instances with specific PDF page numbers and flag potential discrepancies. ONLY extract information that is explicitly stated in the document. Do not estimate or assume missing values. Translate all content to English if the document is in another language.',
-            createdAt: new Date().toISOString()
-        },
-        {
-            id: 'esg-metrics-' + Date.now(),
-            name: 'ESG Metrics Analysis',
-            content: 'Analyze all ESG (Environmental, Social, Governance) metrics in this document. Focus on: Scope 1/2/3 emissions, water consumption, waste generation, energy usage, and social indicators. For any metric reported multiple times, provide all values with their specific PDF page references and identify any inconsistencies. ONLY report metrics that are explicitly mentioned in the document. Do not provide typical industry values or estimates for missing data. Provide analysis in English regardless of original document language.',
-            createdAt: new Date().toISOString()
-        }
-    ];
-    
-    // Only add defaults if no prompts exist
-    if (promptPrefixes.length === 0) {
-        promptPrefixes = defaultPrompts;
-        localStorage.setItem('prompt_prefixes', JSON.stringify(promptPrefixes));
-    }
-}
-
+// Removed initializeDefaultPrompts function since we're loading from files now
 /**
  * Prompt Prefix Management Functions
  */
@@ -198,6 +227,21 @@ function openPromptPrefixModal() {
     renderPrefixList();
     updateActivePrefixSelect();
     promptPrefixModal.classList.remove('hidden');
+}
+
+function openNewPromptForm() {
+    // Clear the form for a new prompt
+    clearPrefixForm();
+    
+    // Remove any editing ID
+    if (prefixForm) {
+        delete prefixForm.dataset.editingId;
+    }
+    
+    // Focus on the name field
+    if (prefixNameInput) {
+        prefixNameInput.focus();
+    }
 }
 
 function closePromptPrefixModal() {
@@ -232,15 +276,27 @@ function savePrefix(event) {
         // Update existing prefix
         const prefixIndex = promptPrefixes.findIndex(p => p.id === editingId);
         if (prefixIndex !== -1) {
-            promptPrefixes[prefixIndex] = {
-                ...promptPrefixes[prefixIndex],
-                name,
-                content
-            };
+            // Only update user-created prompts, not default file-based ones
+            if (!promptPrefixes[prefixIndex].isDefault) {
+                promptPrefixes[prefixIndex] = {
+                    ...promptPrefixes[prefixIndex],
+                    name,
+                    content
+                };
+            } else {
+                // For default prompts, create a copy with a new ID
+                const newPrefix = {
+                    id: Date.now().toString(),
+                    name: name || promptPrefixes[prefixIndex].name,
+                    content,
+                    createdAt: new Date().toISOString()
+                };
+                promptPrefixes.push(newPrefix);
+            }
         }
         delete prefixForm.dataset.editingId;
     } else {
-        // Create new prefix
+        // Create new prefix (stored only in memory)
         const newPrefix = {
             id: Date.now().toString(),
             name,
@@ -256,11 +312,12 @@ function savePrefix(event) {
             promptPrefixes.find(p => p.id === editingId) : 
             promptPrefixes[promptPrefixes.length - 1];
         activePrefix = savedPrefix.id;
-        localStorage.setItem('active_prefix', activePrefix);
+        // Removed localStorage for activePrefix
     }
     
-    // Save to localStorage
-    localStorage.setItem('prompt_prefixes', JSON.stringify(promptPrefixes));
+    // Don't save to localStorage anymore - only keep in memory
+    // User prompts are only stored in memory during the session
+    // To save permanently, user must download the prompt file
     
     // Update UI
     renderPrefixList();
@@ -268,7 +325,38 @@ function savePrefix(event) {
     updateActivePrefixIndicator();
     clearPrefixForm();
     updateQuickPromptList();
+    
+    // Show success message
+    alert('Prompt saved successfully! To save this prompt permanently, please download it using the download button next to the prompt.');
 }
+
+// Add function to download a prompt as a file
+function downloadPromptAsFile(prefixId) {
+    const prefix = promptPrefixes.find(p => p.id === prefixId);
+    if (prefix) {
+        // Create a Blob with the prompt content
+        const blob = new Blob([prefix.content], { type: 'text/plain' });
+        
+        // Create a download link
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${prefix.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_prompt.txt`;
+        
+        // Trigger the download
+        document.body.appendChild(a);
+        a.click();
+        
+        // Clean up
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 100);
+    }
+}
+
+// Make download function globally available
+window.downloadPromptAsFile = downloadPromptAsFile;
 
 function clearPrefixForm() {
     if (prefixNameInput) prefixNameInput.value = '';
@@ -281,23 +369,43 @@ function editPrefix(prefixId) {
     const prefix = promptPrefixes.find(p => p.id === prefixId);
     if (prefix) {
         if (prefixNameInput) prefixNameInput.value = prefix.name;
-        if (prefixContentInput) prefixContentInput.value = prefix.content;
+        if (prefixContentInput) {
+            prefixContentInput.value = prefix.content;
+            // Log the first 100 characters of the content being set
+            console.log(`Setting content for ${prefix.name} (first 100 chars):`, prefix.content.substring(0, 100));
+        }
         if (prefixForm) prefixForm.dataset.editingId = prefixId;
         if (autoApplyPrefixCheckbox) autoApplyPrefixCheckbox.checked = activePrefix === prefixId;
+        
+        // For default prompts, we should indicate that editing creates a copy
+        if (prefix.isDefault) {
+            if (prefixNameInput) prefixNameInput.value = `${prefix.name} (Copy)`;
+        }
+        
+        // Ensure the modal is visible
+        if (promptPrefixModal && promptPrefixModal.classList.contains('hidden')) {
+            promptPrefixModal.classList.remove('hidden');
+        }
     }
 }
 
 function deletePrefix(prefixId) {
-    if (confirm('Are you sure you want to delete this prefix?')) {
+    const prefixToDelete = promptPrefixes.find(p => p.id === prefixId);
+    
+    // Allow deletion of both default and user-created prompts
+    // For default prompts, this just removes them from the current session
+    if (prefixToDelete) {
         promptPrefixes = promptPrefixes.filter(p => p.id !== prefixId);
         
         // Clear active prefix if it was deleted
         if (activePrefix === prefixId) {
             activePrefix = '';
-            localStorage.setItem('active_prefix', activePrefix);
+            // Removed localStorage for activePrefix
         }
         
-        localStorage.setItem('prompt_prefixes', JSON.stringify(promptPrefixes));
+        // Don't save to localStorage anymore - only keep in memory
+        // const userPrompts = promptPrefixes.filter(p => !p.isDefault);
+        // localStorage.setItem('prompt_prefixes', JSON.stringify(userPrompts));
         renderPrefixList();
         updateActivePrefixSelect();
         updateActivePrefixIndicator();
@@ -314,36 +422,63 @@ function renderPrefixList() {
     prefixList.innerHTML = '';
     
     if (promptPrefixes.length === 0) {
-        prefixList.innerHTML = '<p class="text-gray-400 text-sm italic">No prefixes saved yet.</p>';
+        prefixList.innerHTML = '<p class="text-gray-500 text-sm italic">No prefixes saved yet.</p>';
         return;
     }
     
     promptPrefixes.forEach(prefix => {
         const prefixElement = document.createElement('div');
-        prefixElement.className = 'flex items-center justify-between p-3 bg-slate-700 rounded-md';
+        prefixElement.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-md border border-gray-200';
+        
+        // Add visual indicator for default prompts
+        const nameDisplay = prefix.isDefault ? 
+            `${prefix.name} <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded ml-2">Default</span>` : 
+            prefix.name;
+        
+        const actionButtons = prefix.isDefault ? 
+            `
+            <button onclick="editPrefix('${prefix.id}')" class="text-blue-600 hover:text-blue-800 p-1" title="Create a copy to edit">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+                </svg>
+            </button>
+            <button onclick="setActivePrefixById('${prefix.id}')" class="text-green-600 hover:text-green-800 p-1" title="Set as active">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            ` : 
+            `
+            <button onclick="downloadPromptAsFile('${prefix.id}')" class="text-indigo-600 hover:text-indigo-800 p-1" title="Download as file">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button onclick="editPrefix('${prefix.id}')" class="text-blue-600 hover:text-blue-800 p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+            </button>
+            <button onclick="setActivePrefixById('${prefix.id}')" class="text-green-600 hover:text-green-800 p-1" title="Set as active">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button onclick="deletePrefix('${prefix.id}')" class="text-red-600 hover:text-red-800 p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            `;
         
         prefixElement.innerHTML = `
             <div class="flex-1">
-                <h4 class="font-semibold text-white">${escapeHtml(prefix.name)}</h4>
-                <p class="text-sm text-gray-300 truncate" style="max-width: 300px;">${escapeHtml(prefix.content)}</p>
+                <h4 class="font-semibold text-gray-900">${nameDisplay}</h4>
+                <p class="text-sm text-gray-700 truncate" style="max-width: 300px;">${escapeHtml(prefix.content)}</p>
             </div>
             <div class="flex items-center space-x-2">
-                <button onclick="editPrefix('${prefix.id}')" class="text-blue-400 hover:text-blue-300 p-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                    </svg>
-                </button>
-                <button onclick="setActivePrefixById('${prefix.id}')" class="text-green-400 hover:text-green-300 p-1" title="Set as active">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-                <button onclick="deletePrefix('${prefix.id}')" class="text-red-400 hover:text-red-300 p-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd" />
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                    </svg>
-                </button>
+                ${actionButtons}
             </div>
         `;
         
@@ -376,14 +511,14 @@ function setActivePrefix() {
     
     const selectedPrefixId = activePrefixSelect.value;
     activePrefix = selectedPrefixId;
-    localStorage.setItem('active_prefix', activePrefix);
+    // Removed localStorage for activePrefix
     updateActivePrefixIndicator();
     updateQuickPromptList();
 }
 
 function setActivePrefixById(prefixId) {
     activePrefix = prefixId;
-    localStorage.setItem('active_prefix', activePrefix);
+    // Removed localStorage for activePrefix
     updateActivePrefixSelect();
     updateActivePrefixIndicator();
     updateQuickPromptList();
@@ -391,7 +526,7 @@ function setActivePrefixById(prefixId) {
 
 function removeActivePrefix() {
     activePrefix = '';
-    localStorage.setItem('active_prefix', activePrefix);
+    // Removed localStorage for activePrefix
     updateActivePrefixSelect();
     updateActivePrefixIndicator();
     updateQuickPromptList();
@@ -469,11 +604,11 @@ function updateQuickPromptList() {
     } else {
         const noneButton = document.createElement('button');
         noneButton.type = 'button';
-        noneButton.className = 'w-full text-left px-3 py-2 hover:bg-slate-600 text-sm text-gray-300';
+        noneButton.className = 'w-full text-left px-3 py-2 hover:bg-gray-100 text-sm text-gray-700';
         noneButton.setAttribute('data-prefix-id', '');
         noneButton.innerHTML = `
             <span class="font-semibold">None</span>
-            <p class="text-xs text-gray-400">No prefix applied</p>
+            <p class="text-xs text-gray-500">No prefix applied</p>
         `;
         noneButton.addEventListener('click', () => selectQuickPrefix(''));
         quickPromptList.appendChild(noneButton);
@@ -483,8 +618,8 @@ function updateQuickPromptList() {
     promptPrefixes.forEach(prefix => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = `w-full text-left px-3 py-2 hover:bg-slate-600 text-sm ${
-            activePrefix === prefix.id ? 'bg-slate-600 text-white' : 'text-gray-300'
+        button.className = `w-full text-left px-3 py-2 hover:bg-gray-100 text-sm ${
+            activePrefix === prefix.id ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700'
         }`;
         button.setAttribute('data-prefix-id', prefix.id);
         
@@ -492,9 +627,14 @@ function updateQuickPromptList() {
             prefix.content.substring(0, 60) + '...' : 
             prefix.content;
             
+        // Add visual indicator for default prompts
+        const nameDisplay = prefix.isDefault ? 
+            `${prefix.name} (Default)` : 
+            prefix.name;
+            
         button.innerHTML = `
-            <span class="font-semibold">${escapeHtml(prefix.name)}</span>
-            <p class="text-xs text-gray-400">${escapeHtml(truncatedContent)}</p>
+            <span class="font-semibold">${escapeHtml(nameDisplay)}</span>
+            <p class="text-xs text-gray-500">${escapeHtml(truncatedContent)}</p>
         `;
         
         button.addEventListener('click', () => selectQuickPrefix(prefix.id));
@@ -504,7 +644,7 @@ function updateQuickPromptList() {
 
 function selectQuickPrefix(prefixId) {
     activePrefix = prefixId;
-    localStorage.setItem('active_prefix', activePrefix);
+    // Removed localStorage for activePrefix
     updateActivePrefixIndicator();
     updateActivePrefixSelect();
     closeQuickPromptDropdown();
@@ -587,7 +727,7 @@ function saveApiKey(event) {
         return;
     }
     
-    // Save to localStorage
+    // Save to localStorage (keeping this as requested)
     localStorage.setItem('gemini_api_key', newApiKey);
     API_KEY = newApiKey;
     
@@ -675,18 +815,18 @@ function handleDrop(event) {
  */
 function processFileUpload(file) {
     // Check file type
-    const validTypes = ['.pdf', '.docx', '.txt', '.html'];
+    const validTypes = ['.pdf', '.docx', '.txt', '.html', '.htm'];
     const fileExtension = file.name.substring(file.name.lastIndexOf('.'));
     
     if (validTypes.includes(fileExtension.toLowerCase())) {
         // Check if file already exists
-        const existingFileIndex = uploadedFiles.findIndex(f => f.name === file.name && f.size === file.size);
+        const existingFileIndex = uploadedFiles.findIndex(f => f.name === file.name && f.size === f.size);
         if (existingFileIndex === -1) {
             uploadedFiles.push(file);
         }
         render();
     } else {
-        alert('Please upload PDF, DOCX, TXT, or HTML files only.');
+        alert('Please upload PDF, DOCX, TXT, HTML, or HTM files only.');
         if (fileInput) {
             fileInput.value = '';
         }
@@ -742,14 +882,14 @@ function renderFileList() {
     
     uploadedFiles.forEach((file, index) => {
         const fileItem = document.createElement('div');
-        fileItem.className = 'flex items-center justify-between py-1 px-2 bg-slate-700 rounded text-sm';
+        fileItem.className = 'flex items-center justify-between py-1 px-2 bg-white rounded text-sm border border-gray-200';
         
         const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
         const fileInfo = `${file.name} (${fileSizeMB}MB)`;
         
         fileItem.innerHTML = `
-            <span class="truncate flex-1 mr-2" title="${file.name}">${fileInfo}</span>
-            <button class="text-red-400 hover:text-red-300 p-1" onclick="removeFile(${index})" title="Remove file">
+            <span class="truncate flex-1 mr-2 text-gray-900" title="${file.name}">${fileInfo}</span>
+            <button class="text-red-600 hover:text-red-800 p-1" onclick="removeFile(${index})" title="Remove file">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
@@ -885,9 +1025,13 @@ async function handleSendMessage(event) {
         // Prepare content parts for the message
         const contentParts = [];
         
-        // Add text if present (use finalMessage with prefix)
+        // Add text with instruction to identify report types
         if (finalMessage) {
-            contentParts.push({ text: finalMessage });
+            let enhancedMessage = finalMessage;
+            if (uploadedFiles.length > 0) {
+                enhancedMessage += "\n\nBefore analyzing the content, please identify the company name and what type of report each document is based on its content (Annual Report, Sustainability Report, or ESG Report) and mention this in your response in the format: \"[Company Name] - [Document Type]\".";
+            }
+            contentParts.push({ text: enhancedMessage });
         }
         
         // Add files if present
@@ -932,7 +1076,7 @@ async function handleSendMessage(event) {
         
         if (error.message && error.message.includes('API key not valid')) {
             errorMessage = 'API key error: The API key you provided is not valid. Please click the "Set API Key" button to update your API key.';
-            localStorage.removeItem('gemini_api_key');
+            // Keep API key in localStorage as requested
             API_KEY = '';
             genAI = null;
             chatSession = null;
@@ -970,14 +1114,27 @@ function render() {
         const messageContent = document.createElement('div');
         messageContent.className = message.role === 'user' ? 
             'max-w-3xl bg-indigo-600 text-white p-3 rounded-lg' : 
-            'max-w-4xl bg-slate-800 text-white p-3 rounded-lg markdown-content';
+            'max-w-4xl bg-white text-gray-900 p-3 rounded-lg markdown-content border border-gray-200';
         
         if (message.role === 'model') {
             // Use marked to parse the markdown
-            messageContent.innerHTML = marked.parse(message.text);
+            try {
+                // Sanitize and parse markdown content
+                const sanitizedText = message.text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                messageContent.innerHTML = marked.parse(message.text);
+            } catch (parseError) {
+                console.error('Markdown parsing error:', parseError);
+                // Fallback to plain text if markdown parsing fails
+                messageContent.textContent = message.text;
+            }
         } else {
             messageContent.textContent = message.text;
         }
+        
+        // Ensure proper rendering of table content
+        messageContent.querySelectorAll('table').forEach(table => {
+            table.classList.add('markdown-content-table');
+        });
         
         messageDiv.appendChild(messageContent);
         chatContainer.appendChild(messageDiv);
@@ -989,7 +1146,7 @@ function render() {
         loadingDiv.className = 'flex justify-start';
         
         const loadingContent = document.createElement('div');
-        loadingContent.className = 'max-w-4xl bg-slate-800 text-white p-3 rounded-lg flex items-center space-x-2';
+        loadingContent.className = 'max-w-4xl bg-white text-gray-900 p-3 rounded-lg flex items-center space-x-2 border border-gray-200';
         
         loadingContent.innerHTML = `
             <div class="flex space-x-1">
@@ -997,7 +1154,7 @@ function render() {
                 <div class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.1s;"></div>
                 <div class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
             </div>
-            <span class="text-gray-300">${loadingMessage}</span>
+            <span class="text-gray-700">${loadingMessage}</span>
         `;
         
         loadingDiv.appendChild(loadingContent);
@@ -1022,7 +1179,10 @@ function render() {
     
     // Scroll to bottom
     if (chatContainer) {
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        // Use a small delay to ensure content is rendered before scrolling
+        setTimeout(() => {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }, 10);
     }
 }
 

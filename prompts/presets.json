@@ -1,0 +1,10 @@
+{
+  "presets": [
+    {
+      "id": "esg-metrics-1",
+      "name": "ESG Metrics Analysis",
+      "file": "esg_metrics_prompt.txt",
+      "description": "Analyze all ESG metrics in documents"
+    }
+  ]
+}
