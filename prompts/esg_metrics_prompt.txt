@@ -9,7 +9,7 @@ PM is different from PM 2.5 and PM 10.
 
 **OVERARCHING GOAL:** From the document provided, extract all specified Environmental and key Business data points for the **2024 reporting period ONLY**, presenting the information in a structured, granular format with complete source tracing.
 
-**CRITICAL OVERARCHING PRINCIPLES (MUST BE FOLLOWED):**
+**CRITICAL OVERARCHING PRINCIPIPLES (MUST BE FOLLOWED):**
 
 *   **TRANSLATION TO ENGLISH:** If the source document is in a language other than English, you MUST translate all extracted information into English for the final output.
 *   **TARGET YEAR FOCUS:** EXTRACT DATA FOR THE **2024 REPORTING PERIOD ONLY.** This includes fiscal years such as FY2024, FY24, and reporting periods ending in 2024 (e.g., 2023-2024). Be precise in identifying the correct data column or row.
@@ -36,7 +36,7 @@ First, identify the document and its environmental reporting scope. You must pro
 **ESG/Environmental Reporting Scope:**
 *   **Primary Reporting Year:** [State the primary year for which data is being reported, e.g., 2024] (Page #)
 *   **Time Period Covered:** [State the full time period, e.g., January 1, 2024 to December 31, 2024] (Page #)
-*   **Organizational Boundaries:** [Define the organizational boundaries, noting any material exclusions] (Page #)
+*   **Organizational Boundaries:** [Define the overall organizational boundaries for the report, noting any material exclusions] (Page #)
 *   **Reporting Frameworks Mentioned:** [List any specific reporting frameworks] (Page #)
 
 ---
@@ -46,60 +46,61 @@ First, identify the document and its environmental reporting scope. You must pro
 Use the following separate tables to present your findings for environmental metrics.
 
 **GHG Emissions Data**
-| Metric | Value | Unit | Page Source (PDF#) | Section |
-| :--- | :--- | :--- | :--- | :--- |
-| GHG Scope 1 Emissions | | | | |
-| GHG Scope 2 Emissions (Location-Based) | | | | |
-| GHG Scope 2 Emissions (Market-Based) | | | | |
-| GHG Biogenic Emissions | | | | |
-| GHG Gas Breakdown Detail (extract each gas, e.g., CO₂, CH₄, N₂O, HFCs, PFCs, SF₆) | | | | |
-| Scope 3 Category Breakdown (extract each individual category provided) | | | | |
-
-**Energy Data**
-| Metric | Value | Unit | Page Source (PDF#) | Section |
-| :--- | :--- | :--- | :--- | :--- |
-| Total Energy Consumption | | | | |
-| Energy Consumption Breakdown (extract each source, e.g., Electricity, Natural Gas) | | | | |
-| Energy Consumption from Biomass | | | | |
-| Renewable Energy Consumption | | | | |
-| Non-Renewable Energy Consumption | | | | |
+| Metric | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| GHG Scope 1 Emissions | | | | | |
+| GHG Scope 2 Emissions (Location-Based) | | | | | |
+| GHG Scope 2 Emissions (Market-Based) | | | | | |
+| GHG Biogenic Emissions | | | | | |
+| GHG Gas Breakdown Detail (extract each gas) | | | | | |
+| Scope 3 Category Breakdown (extract each category) | | | | | |
 
 **Water Data**
-| Metric | Value | Unit | Page Source (PDF#) | Section |
-| :--- | :--- | :--- | :--- | :--- |
-| Total Water Consumption | | | | |
-| Total Water Withdrawal | | | | |
-| Total Water Discharge | | | | |
-| Water Withdrawal by Source Breakdown (extract each source) | | | | |
-| Water in Water-Stressed Regions | | | | |
+| Metric | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Total Water Consumption | | | | | |
+| Total Water Withdrawal | | | | | |
+| Total Water Discharge | | | | | |
+| Water Withdrawal by Source Breakdown (extract each source) | | | | | |
+| Water in Water-Stressed Regions | | | | | |
 
-**Waste Data**
-| Metric | Value | Unit | Page Source (PDF#) | Section |
-| :--- | :--- | :--- | :--- | :--- |
-| Total Waste Generated | | | | |
-| Hazardous Waste Generated | | | | |
-| Non-Hazardous Waste Generated | | | | |
-| Waste Recycled | | | | |
-| Waste Landfilled | | | | |
-| Waste Incinerated | | | | |
-| Other Waste Metrics (extract any others provided, specifying the type) | | | | |
+**Waste Generation Data**
+| Metric (as stated in report) | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+
+**Waste Disposal & Treatment Data**
+| Metric (as stated in report) | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 
 **Air & Water Pollutants Data**
-| Metric | Value | Unit | Page Source (PDF#) | Section |
-| :--- | :--- | :--- | :--- | :--- |
-| Air Pollutants: NOx | | | | |
-| Air Pollutants: SOx | | | | |
-| Air Pollutants: VOC | | | | |
-| Air Pollutants: PM | | | | |
-| Air Pollutants: PM2.5 | | | | |
-| Air Pollutants: PM10 | | | | |
-| Water Pollutants (extract all provided) | | | | |
+| Metric | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Air Pollutants: NOx | | | | | |
+| Air Pollutants: SOx | | | | | |
+| Air Pollutants: VOC | | | | | |
+| Air Pollutants: PM | | | | | |
+| Air Pollutants: PM2.5 | | | | | |
+| Air Pollutants: PM10 | | | | | |
+| Water Pollutants (extract all provided) | | | | | |
+
+**Energy Data**
+| Metric | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Total Energy Consumption | | | | | |
+| Energy Consumption Breakdown (extract each source) | | | | | |
+| Energy Consumption from Biomass | | | | | |
+| Renewable Energy Consumption | | | | | |
+| Non-Renewable Energy Consumption | | | | | |
 
 **Specific Data Point Instructions (Environmental):**
+*   **Waste Data: Dynamic KPI Extraction Rule:** You must capture **every individual waste KPI** presented in the report. For each distinct waste metric found, you must create a **new row** in the appropriate table.
+    *   **Use Exact Terminology:** The text in the `Metric (as stated in report)` column MUST mirror the terminology used in the source document exactly.
+    *   **No Inference or Classification:** Do NOT infer classifications. If a report lists "Domestic Waste" but does not explicitly label it as "Non-Hazardous," you must report the metric as "Domestic Waste". Only use the term "Hazardous Waste" if the report itself uses that specific term.
+    *   **Generation vs. Disposal:** Place metrics with keywords like `Generated` or `Produced` in the **Generation** table. Place metrics with keywords like `Recycled`, `Landfilled`, `Disposed`, or `Incinerated` in the **Disposal & Treatment** table.
+*   **Metric-Specific Boundary Rule:** In the 'Reporting Boundary' column, note any specific boundaries mentioned for an individual metric or data category (e.g., "Covers owned and operated facilities only"). If no specific boundary is mentioned, leave this column blank.
 *   **GHG Scope 2 Classification Rule:** Classify as Location-Based if using a grid-average factor. Classify as Market-Based if contractual instruments (e.g., RECs) are mentioned. If only one Scope 2 value is provided and the method is unspecified, classify it as Location-Based.
 *   **GHG Gas Breakdown:** Search for all Kyoto Protocol gases (CO₂, CH₄, N₂O, HFCs, PFCs, SF₆). Create a new row for each gas identified.
-*   **Water Consumption vs. Usage Rule:** The term 'water usage' is not equivalent to 'water consumption'. Only report a value for 'Total Water Consumption' if the document explicitly labels it as 'consumption'. You may treat 'usage' as 'consumption' ONLY if there is direct evidence (e.g., a GRI standards table, a footnote) that defines them as the same. Otherwise, if only 'water usage' is reported, 'Total Water Consumption' should be 'Not Found'.
-*   **Waste Data Instruction:** Use the pre-defined waste metric rows. If the report provides a metric that doesn't fit (e.g., "Waste to Energy"), use the "Other Waste Metrics" row and specify the exact name from the report in the "Metric" column (e.g., "Other Waste Metrics - Waste to Energy").
+*   **Water Consumption vs. Usage Rule:** The term 'water usage' is not equivalent to 'water consumption'. Only report a value for 'Total Water consumption' if the document explicitly labels it as 'consumption'. You may treat 'usage' as 'consumption' ONLY if there is direct evidence (e.g., a GRI standards table, a footnote) that defines them as the same. Otherwise, if only 'water usage' is reported, 'Total Water Consumption' should be 'Not Found'.
 
 ---
 
@@ -120,6 +121,7 @@ First, provide the business and segment overview, then extract the key financial
 | Product Revenue - [Product Name 1] | | | | |
 
 **Specific Data Point Instructions (Financial):**
+*   **Strict Financial Scope Rule: EXTRACT REVENUE DATA ONLY.** You are strictly forbidden from extracting any other financial metrics, even if they are present in the same table or statement. This includes, but is not limited to: **profit (gross, operating, net), profit before tax, total assets, liabilities, equity, EBITDA, and cash flow.** Your task is limited to the specified top-line revenue figures.
 *   **Financial Data Currency Rule:** For all financial data points, the currency (e.g., USD, EUR, JPY) **must be specified** in the "Unit / Currency" column. If the currency is mentioned (e.g., "in millions of USD"), capture it. If no currency is specified, enter "Not Specified".
 *   **Financial Data Breakdown Rule:** Extract the total Consolidated Revenue. Then, for segment or product breakdowns, create a **new row for each individual segment or product line** reported. Use the format 'Segment Revenue - [Name]' or 'Product Revenue - [Name]' in the Metric column.
 
@@ -133,11 +135,14 @@ Create a final section titled "Data Availability Notes". In this section, list a
 
 **Task 5: Final Quality Control (QC) Checklist**
 
-Before providing your final output, you must perform this internal QC check on your own work. **Do not display the checklist itself in the final answer.** Use it as your final review process.
+Before providing your final output, you must perform this internal QC check on your own work. **Do not display the checklist itself in the final answer.**
 
 *   **Comprehensive Scan Check:** Have I scanned all content types, including tables, text, and images, for all data points?
 *   **Language Check:** If the document was not in English, have I translated all my outputs correctly?
 *   **Year Check:** Is ALL the extracted data strictly for the 2024 reporting period (or FY24, etc.)?
+*   **Strict Financial Scope Check:** Have I only extracted revenue data and completely avoided all other financial metrics like profit, assets, etc., as instructed?
+*   **Dynamic Waste KPI Check:** Have I created a separate row for every single waste generation and disposal metric found in the report, using the exact terminology from the source without making any assumptions or classifications?
+*   **Metric-Specific Boundary Check:** If the document specified a unique reporting boundary for a particular metric, have I captured this detail in the 'Reporting Boundary' column?
 *   **Business Info Check:** Have I extracted business/segment info verbatim and only for segments with financial data?
 *   **Table/Chart Verification Check:** For every numerical value from a visual, have I re-traced the row/column to confirm it aligns with the "2024" header?
 *   **'Not Found' Rule Check:** For any metric where the 2024 value was missing, have I correctly reported the Value as "Not Found"?
