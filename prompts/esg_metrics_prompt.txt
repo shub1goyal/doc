@@ -12,14 +12,14 @@ PM is different from PM 2.5 and PM 10.
 **CRITICAL OVERARCHING PRINCIPIPLES (MUST BE FOLLOWED):**
 
 *   **TRANSLATION TO ENGLISH:** If the source document is in a language other than English, you MUST translate all extracted information into English for the final output.
-*   **TARGET YEAR FOCUS:** EXTRACT DATA FOR THE **2024 REPORTING PERIOD ONLY.** This includes fiscal years such as FY2024, FY24, and reporting periods ending in 2024 (e.g., 2023-2024). Be precise in identifying the correct data column or row.
-*   **COMPREHENSIVE SOURCE SCANNING:** You must extract data from all content types within the document, including standard text, tables, charts, graphs, infographics, and footnotes. This applies to ALL data points (Environmental and Financial).
-*   **ENVIRONMENTAL vs. FINANCIAL DATA CLASSIFICATION:** If an environmental topic (e.g., Waste Management, Recycling Services) is presented as a revenue-generating business segment, its financial figures (revenue, profit, etc.) must be captured ONLY in the Financial Data section (Task 3). Do not report revenue figures in the Environmental Data tables (Task 2).
-*   **METICULOUS VERIFICATION IN TABLES/CHARTS:** When extracting from visual data, you must explicitly double-check the alignment of the value with its corresponding "2024" label and metric. Visually trace the row and column to prevent misreading adjacent data.
-*   **GRANULARITY:** PRIORITIZE GRANULARITY. Extract the most disaggregated data available. Do not sum, average, or aggregate numbers yourself.
-*   **SOURCE TRACING:** SOURCE TRACING IS MANDATORY. In the "Page Source (PDF#)" column, you must list all page numbers where the data point is mentioned.
+*   **TARGET YEAR FOCUS:** EXTRACT DATA FOR THE **2024 REPORTING PERIOD ONLY.** This includes fiscal years such as FY2024, FY24, and reporting periods ending in 2024 (e.g., 2023-2024).
+*   **COMPREHENSIVE SOURCE SCANNING:** You must extract data from all content types within the document, including standard text, tables, charts, graphs, infographics, and footnotes.
+*   **ENVIRONMENTAL vs. FINANCIAL DATA CLASSIFICATION:** If an environmental topic (e.g., Waste Management) is presented as a revenue-generating business segment, its financial figures must be captured ONLY in the Financial Data section (Task 3).
+*   **METICULOUS VERIFICATION IN TABLES/CHARTS:** When extracting from visual data, you must explicitly double-check the alignment of the value with its corresponding "2024" label and metric.
+*   **GRANULARITY:** PRIORITIZE GRANULARITY. Extract the most disaggregated data available. **Do not sum, average, or aggregate numbers yourself.** However, if the report provides a pre-calculated total (e.g., 'Total Scope 1 & 2 Emissions'), you must extract that value into its designated row.
+*   **SOURCE TRACING:** SOURCE TRACING IS MANDATORY. In the "Page Source (PDF#)" column, list all page numbers where the data point is mentioned.
 *   **NUMERICAL FORMATTING:** Present all numerical values without commas (e.g., 1234567).
-*   **DATA POINT PRESENCE CHECK:** For each data point, if the 2024 value is missing, blank, or a dash in a table, report the Value as "Not Found".
+*   **DATA POINT PRESENCE CHECK:** For each data point, if the 2024 quantitative value is missing, blank, or a dash in a table, report the Value as "Not Found".
 *   **REVISIT ALL PAGE CONTENT:** Assume no prior knowledge. Systematically review the entire document to ensure no data is missed.
 *   **PRIORITIZE ACCURACY OVER EFFICIENCY:** Take the time necessary to ensure the extracted data is correct and completely fulfills the instructions.
 
@@ -51,9 +51,10 @@ Use the following separate tables to present your findings for environmental met
 | GHG Scope 1 Emissions | | | | | |
 | GHG Scope 2 Emissions (Location-Based) | | | | | |
 | GHG Scope 2 Emissions (Market-Based) | | | | | |
+| GHG Total Emissions (Scopes 1 & 2) | | | | | |
 | GHG Biogenic Emissions | | | | | |
-| GHG Gas Breakdown Detail (extract each gas) | | | | | |
-| Scope 3 Category Breakdown (extract each category) | | | | | |
+| GHG Gas Breakdown Detail | | | | | |
+| Scope 3 Category Breakdown | | | | | |
 
 **Water Data**
 | Metric | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
@@ -93,14 +94,13 @@ Use the following separate tables to present your findings for environmental met
 | Non-Renewable Energy Consumption | | | | | |
 
 **Specific Data Point Instructions (Environmental):**
-*   **Waste Data: Dynamic KPI Extraction Rule:** You must capture **every individual waste KPI** presented in the report. For each distinct waste metric found, you must create a **new row** in the appropriate table.
-    *   **Use Exact Terminology:** The text in the `Metric (as stated in report)` column MUST mirror the terminology used in the source document exactly.
-    *   **No Inference or Classification:** Do NOT infer classifications. If a report lists "Domestic Waste" but does not explicitly label it as "Non-Hazardous," you must report the metric as "Domestic Waste". Only use the term "Hazardous Waste" if the report itself uses that specific term.
-    *   **Generation vs. Disposal:** Place metrics with keywords like `Generated` or `Produced` in the **Generation** table. Place metrics with keywords like `Recycled`, `Landfilled`, `Disposed`, or `Incinerated` in the **Disposal & Treatment** table.
-*   **Metric-Specific Boundary Rule:** In the 'Reporting Boundary' column, note any specific boundaries mentioned for an individual metric or data category (e.g., "Covers owned and operated facilities only"). If no specific boundary is mentioned, leave this column blank.
-*   **GHG Scope 2 Classification Rule:** Classify as Location-Based if using a grid-average factor. Classify as Market-Based if contractual instruments (e.g., RECs) are mentioned. If only one Scope 2 value is provided and the method is unspecified, classify it as Location-Based.
-*   **GHG Gas Breakdown:** Search for all Kyoto Protocol gases (CO₂, CH₄, N₂O, HFCs, PFCs, SF₆). Create a new row for each gas identified.
-*   **Water Consumption vs. Usage Rule:** The term 'water usage' is not equivalent to 'water consumption'. Only report a value for 'Total Water consumption' if the document explicitly labels it as 'consumption'. You may treat 'usage' as 'consumption' ONLY if there is direct evidence (e.g., a GRI standards table, a footnote) that defines them as the same. Otherwise, if only 'water usage' is reported, 'Total Water Consumption' should be 'Not Found'.
+*   **Qualitative vs. Quantitative Breakdown Rule:** Apply this logic to both `GHG Gas Breakdown Detail` and `Scope 3 Category Breakdown`:
+    *   **1. For Quantitative Breakdowns:** If the report provides a table with **numerical values** for each item (e.g., each gas or each Scope 3 category), you MUST create a **new row for each individual item**. Use the format `GHG Gas: [Gas Name]` or `Scope 3 Category: [Category Name]` in the Metric column.
+    *   **2. For Qualitative-Only Mentions:** If the report only lists the items **without providing individual numbers** (e.g., in a list, text, or diagram), you must capture this concisely in a **single row**. In the `Value` column, list all mentioned items as a comma-separated list (e.g., `CO2, CH4, N2O...`). Set the `Unit` to `N/A`.
+*   **GHG Total (Scope 1 & 2) Rule:** Only populate the 'GHG Total Emissions (Scopes 1 & 2)' row if the report **explicitly provides a pre-calculated, combined figure** for Scope 1 and 2. Do NOT calculate this value yourself by adding the individual Scope 1 and Scope 2 figures.
+*   **Waste Data: Dynamic KPI Extraction Rule:** You must capture **every individual waste KPI** presented in the report by creating a new row for each, using the exact terminology from the source document. Do NOT infer classifications. Place metrics with keywords like `Generated` in the **Generation** table, and `Recycled`, `Landfilled`, `Disposed` in the **Disposal** table.
+*   **Metric-Specific Boundary Rule:** In the 'Reporting Boundary' column, note any specific boundaries mentioned for an individual metric.
+*   **Water Consumption vs. Usage Rule:** The term 'water usage' is not equivalent to 'water consumption'. Only report a value for 'Total Water consumption' if the document explicitly labels it as 'consumption' or provides direct evidence that they are the same.
 
 ---
 
@@ -140,9 +140,11 @@ Before providing your final output, you must perform this internal QC check on y
 *   **Comprehensive Scan Check:** Have I scanned all content types, including tables, text, and images, for all data points?
 *   **Language Check:** If the document was not in English, have I translated all my outputs correctly?
 *   **Year Check:** Is ALL the extracted data strictly for the 2024 reporting period (or FY24, etc.)?
-*   **Strict Financial Scope Check:** Have I only extracted revenue data and completely avoided all other financial metrics like profit, assets, etc., as instructed?
-*   **Dynamic Waste KPI Check:** Have I created a separate row for every single waste generation and disposal metric found in the report, using the exact terminology from the source without making any assumptions or classifications?
-*   **Metric-Specific Boundary Check:** If the document specified a unique reporting boundary for a particular metric, have I captured this detail in the 'Reporting Boundary' column?
+*   **Strict Financial Scope Check:** Have I only extracted revenue data and completely avoided all other financial metrics like profit, assets, etc.?
+*   **Breakdown Logic Check:** Have I correctly applied the two-part rule for both GHG Gases and Scope 3, using separate rows for quantitative values and a single, comma-separated list for qualitative-only mentions?
+*   **GHG Total Check:** Have I only populated the 'GHG Total (Scopes 1 & 2)' row if a pre-calculated total was explicitly provided?
+*   **Dynamic Waste KPI Check:** Have I created a separate row for every single waste KPI using exact terminology?
+*   **Metric-Specific Boundary Check:** Have I captured this detail in the 'Reporting Boundary' column?
 *   **Business Info Check:** Have I extracted business/segment info verbatim and only for segments with financial data?
 *   **Table/Chart Verification Check:** For every numerical value from a visual, have I re-traced the row/column to confirm it aligns with the "2024" header?
 *   **'Not Found' Rule Check:** For any metric where the 2024 value was missing, have I correctly reported the Value as "Not Found"?
