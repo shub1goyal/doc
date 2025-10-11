@@ -9,6 +9,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Marked.js for Markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/xlsx.full.min.js"></script>
+    <!-- Fallback for SheetJS -->
+    <script>
+        // Fallback if CDN fails
+        if (typeof XLSX === 'undefined') {
+            document.write('<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"><\/script>');
+        }
+    </script>
     <!-- Google's Gemini AI SDK -->
     <script type="importmap">
     {
@@ -28,6 +37,7 @@
             overflow: hidden;
             table-layout: auto;
             display: table; /* Ensure table is displayed properly */
+            width: 100%; /* Changed from max-content to 100% to fit container */
         }
         .markdown-content th, .markdown-content td {
             border: 1px solid #d1d5db;
@@ -36,19 +46,20 @@
             vertical-align: top;
             word-wrap: break-word;
             overflow-wrap: break-word;
-            max-width: 300px; /* Limit cell width to prevent overflow */
+            max-width: none; /* Removed max-width limitation */
+            white-space: normal; /* Allow text to wrap */
         }
         .markdown-content th {
             background-color: #f3f4f6;
             font-weight: 600;
             color: #1f2937;
             border-bottom: 2px solid #d1d5db;
-            white-space: nowrap;
+            white-space: normal; /* Allow header text to wrap */
         }
         .markdown-content td {
             background-color: #ffffff;
             color: #1f2937;
-            min-width: 120px;
+            min-width: 100px; /* Reduced from 150px */
         }
         .markdown-content tbody tr:nth-child(even) td {
             background-color: #f9fafb;
@@ -58,21 +69,22 @@
         }
         /* Handle table overflow */
         .markdown-content {
-            overflow-x: auto;
+            overflow-x: hidden; /* Changed from auto to hidden to prevent scrolling */
             overflow-y: visible; /* Allow vertical overflow */
         }
         .markdown-content table {
             min-width: 100%;
+            width: 100%; /* Ensure tables use full width of container */
         }
         /* Specific column sizing for better layout */
         .markdown-content th:first-child,
         .markdown-content td:first-child {
-            min-width: 180px;
+            min-width: 150px; /* Reduced from 250px */
             font-weight: 500;
         }
         .markdown-content th:last-child,
         .markdown-content td:last-child {
-            min-width: 100px;
+            min-width: 100px; /* Reduced from 150px */
         }
         /* Ensure the chat container takes full height minus header and input area */
         #chat-container {
@@ -125,6 +137,61 @@
         /* Ensure proper rendering of nested elements */
         .markdown-content * {
             box-sizing: border-box;
+        }
+        
+        /* Styles for copy and export buttons */
+        .message-buttons {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            display: flex;
+            gap: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+        
+        .group:hover .message-buttons {
+            opacity: 1;
+        }
+        
+        .group\/table:hover .message-buttons {
+            opacity: 1;
+        }
+        
+        .message-button {
+            padding: 0.25rem;
+            background-color: #f3f4f6;
+            border-radius: 0.25rem;
+            color: #4b5563;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        
+        .message-button:hover {
+            background-color: #e5e7eb;
+        }
+        
+        /* Scrollbar styling */
+        #chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #chat-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        #chat-container::-webkit-scrollbar-thumb {
+            background: #c7d2fe;
+            border-radius: 4px;
+        }
+        
+        #chat-container::-webkit-scrollbar-thumb:hover {
+            background: #a5b4fc;
+        }
+        
+        /* Toast notification */
+        #toast-notification {
+            transition: opacity 0.3s ease-in-out;
         }
     </style>
 </head>
@@ -305,7 +372,7 @@
             </button>
             
             <!-- Hidden File Input -->
-            <input type="file" id="file-input" class="hidden" accept=".pdf,.docx,.txt,.html,.htm" multiple>
+            <input type="file" id="file-input" class="hidden" accept=".pdf,.docx,.txt,.html,.htm,.jpg,.jpeg,.png,.gif,.bmp,.tiff" multiple>
             
             <!-- Text Input -->
             <input type="text" id="message-input" class="flex-1 bg-white border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Type your message..." autocomplete="off">

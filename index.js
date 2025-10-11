@@ -159,6 +159,26 @@ function safeAddEventListener(element, event, handler) {
 
 // Event Listeners with safe attachment
 safeAddEventListener(chatForm, 'submit', handleSendMessage);
+// Add keydown listener for Shift+Enter functionality
+if (messageInput) {
+    messageInput.addEventListener('keydown', function(event) {
+        // If Shift+Enter is pressed, insert a new line instead of sending
+        if (event.key === 'Enter' && event.shiftKey) {
+            event.preventDefault();
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            this.value = this.value.substring(0, start) + '\n' + this.value.substring(end);
+            this.selectionStart = this.selectionEnd = start + 1;
+        }
+        // If Enter is pressed without Shift, send the message
+        else if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            if (chatForm) {
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        }
+    });
+}
 safeAddEventListener(attachButton, 'click', () => {
     if (fileInput) {
         fileInput.click();
@@ -815,7 +835,7 @@ function handleDrop(event) {
  */
 function processFileUpload(file) {
     // Check file type
-    const validTypes = ['.pdf', '.docx', '.txt', '.html', '.htm'];
+    const validTypes = ['.pdf', '.docx', '.txt', '.html', '.htm', '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'];
     const fileExtension = file.name.substring(file.name.lastIndexOf('.'));
     
     if (validTypes.includes(fileExtension.toLowerCase())) {
@@ -826,7 +846,7 @@ function processFileUpload(file) {
         }
         render();
     } else {
-        alert('Please upload PDF, DOCX, TXT, HTML, or HTM files only.');
+        alert('Please upload PDF, DOCX, TXT, HTML, HTM, or image files (JPG, PNG, GIF, BMP, TIFF) only.');
         if (fileInput) {
             fileInput.value = '';
         }
@@ -1111,10 +1131,13 @@ function render() {
         messageDiv.className = message.role === 'user' ? 
             'flex justify-end' : 'flex justify-start';
         
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = 'relative';
+        
         const messageContent = document.createElement('div');
         messageContent.className = message.role === 'user' ? 
             'max-w-3xl bg-indigo-600 text-white p-3 rounded-lg' : 
-            'max-w-4xl bg-white text-gray-900 p-3 rounded-lg markdown-content border border-gray-200';
+            'max-w-7xl bg-white text-gray-900 p-3 rounded-lg markdown-content border border-gray-200'; // Increased from max-w-6xl to max-w-7xl
         
         if (message.role === 'model') {
             // Use marked to parse the markdown
@@ -1127,16 +1150,73 @@ function render() {
                 // Fallback to plain text if markdown parsing fails
                 messageContent.textContent = message.text;
             }
+            
+            // Add copy button for the entire response
+            const buttonContainer = document.createElement('div');
+            buttonContainer.className = 'absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity';
+            
+            // Copy button for entire response
+            const copyButton = document.createElement('button');
+            copyButton.className = 'p-1 bg-gray-100 hover:bg-gray-200 rounded text-gray-600';
+            copyButton.title = 'Copy entire response';
+            copyButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                </svg>
+            `;
+            copyButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                copyToClipboard(message.text);
+            });
+            
+            buttonContainer.appendChild(copyButton);
+            messageWrapper.appendChild(buttonContainer);
         } else {
             messageContent.textContent = message.text;
         }
         
-        // Ensure proper rendering of table content
-        messageContent.querySelectorAll('table').forEach(table => {
+        // Ensure proper rendering of table content and add copy buttons to tables
+        messageContent.querySelectorAll('table').forEach((table, index) => {
             table.classList.add('markdown-content-table');
+            
+            // Create a container for the table with relative positioning
+            const tableContainer = document.createElement('div');
+            tableContainer.className = 'relative group/table';
+            tableContainer.style.cssText = 'margin: 1rem 0;';
+            
+            // Move the table into the container
+            table.parentNode.insertBefore(tableContainer, table);
+            tableContainer.appendChild(table);
+            
+            // Add copy button for the table
+            const tableButtonContainer = document.createElement('div');
+            tableButtonContainer.className = 'absolute top-2 right-2 flex space-x-1 opacity-0 group-hover/table:opacity-100 transition-opacity';
+            
+            const tableCopyButton = document.createElement('button');
+            tableCopyButton.className = 'p-1 bg-gray-100 hover:bg-gray-200 rounded text-gray-600';
+            tableCopyButton.title = 'Copy table';
+            tableCopyButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                </svg>
+            `;
+            
+            tableCopyButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Convert table to markdown format for copying
+                const tableMarkdown = convertTableToMarkdown(table);
+                copyToClipboard(tableMarkdown);
+            });
+            
+            tableButtonContainer.appendChild(tableCopyButton);
+            tableContainer.appendChild(tableButtonContainer);
         });
         
-        messageDiv.appendChild(messageContent);
+        messageWrapper.appendChild(messageContent);
+        messageWrapper.classList.add('group'); // For hover effects
+        messageDiv.appendChild(messageWrapper);
         chatContainer.appendChild(messageDiv);
     });
     
@@ -1146,7 +1226,7 @@ function render() {
         loadingDiv.className = 'flex justify-start';
         
         const loadingContent = document.createElement('div');
-        loadingContent.className = 'max-w-4xl bg-white text-gray-900 p-3 rounded-lg flex items-center space-x-2 border border-gray-200';
+        loadingContent.className = 'max-w-7xl bg-white text-gray-900 p-3 rounded-lg flex items-center space-x-2 border border-gray-200'; // Changed from max-w-6xl to max-w-7xl
         
         loadingContent.innerHTML = `
             <div class="flex space-x-1">
@@ -1177,14 +1257,133 @@ function render() {
     // Update active prefix indicator
     updateActivePrefixIndicator();
     
-    // Scroll to bottom
+    // Scroll to bottom with a delay to ensure content is rendered
     if (chatContainer) {
+        // Only scroll to bottom if user is near the bottom already
+        const isNearBottom = chatContainer.scrollTop + chatContainer.clientHeight >= chatContainer.scrollHeight - 100;
+        
         // Use a small delay to ensure content is rendered before scrolling
         setTimeout(() => {
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            if (isNearBottom) {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
         }, 10);
     }
 }
 
 // Make removeFile function globally available
 window.removeFile = removeFile;
+
+/**
+ * Copy text to clipboard
+ */
+function copyToClipboard(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            console.log('Text copied to clipboard');
+            // Show visual feedback
+            showToast('Copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+            // Fallback method
+            fallbackCopyTextToClipboard(text);
+        });
+    } else {
+        // Fallback for older browsers
+        fallbackCopyTextToClipboard(text);
+    }
+}
+
+function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    
+    // Avoid scrolling to bottom
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            console.log('Text copied to clipboard');
+            showToast('Copied to clipboard!');
+        } else {
+            console.error('Failed to copy text');
+            showToast('Failed to copy to clipboard', 'error');
+        }
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+        showToast('Failed to copy to clipboard', 'error');
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+/**
+ * Show toast notification
+ */
+function showToast(message, type = 'success') {
+    // Remove any existing toast
+    const existingToast = document.getElementById('toast-notification');
+    if (existingToast) {
+        existingToast.remove();
+    }
+    
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 text-white ${
+        type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    }`;
+    toast.textContent = message;
+    
+    // Add to document
+    document.body.appendChild(toast);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    }, 3000);
+}
+
+/**
+ * Convert HTML table to markdown format
+ */
+function convertTableToMarkdown(tableElement) {
+    let markdown = '';
+    const rows = tableElement.querySelectorAll('tr');
+    
+    if (rows.length === 0) return '';
+    
+    // Process header row
+    const headerCells = rows[0].querySelectorAll('th, td');
+    const headers = Array.from(headerCells).map(cell => cell.textContent.trim());
+    
+    // Create header row
+    markdown += '| ' + headers.join(' | ') + ' |\n';
+    
+    // Create separator row
+    markdown += '| ' + headers.map(() => '---').join(' | ') + ' |\n';
+    
+    // Process data rows
+    for (let i = 1; i < rows.length; i++) {
+        const cells = rows[i].querySelectorAll('td');
+        const cellData = Array.from(cells).map(cell => cell.textContent.trim());
+        markdown += '| ' + cellData.join(' | ') + ' |\n';
+    }
+    
+    return markdown;
+}
+
+// Make functions globally available
+window.copyToClipboard = copyToClipboard;
+window.showToast = showToast;
+window.convertTableToMarkdown = convertTableToMarkdown;
