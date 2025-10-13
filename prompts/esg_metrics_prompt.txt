@@ -101,6 +101,7 @@ Use the following separate tables to present your findings for environmental met
 | Non-Renewable Energy Consumption | | | | | |
 
 **Specific Data Point Instructions (Environmental):**
+*   **Granular Data Breakdown Rule:** If a primary metric (e.g., `GHG Scope 1 Emissions`) is not provided as a single, pre-calculated total, but the report instead provides a quantitative breakdown of its individual components (e.g., "emissions from private cars" and "emissions from vessels"), you **MUST** report the primary metric as "Not Found" and create **new, separate rows** for each individual component. Format the new metric as `[Primary Metric Name] - [Component Name from report]`.
 *   **Absolute vs. Normalized Data Prioritization Rule:** Your primary goal is to extract absolute, standalone environmental figures (e.g., `tonnes`, `kilolitres`). However, if a report **only** provides a normalized or intensity-based figure for a specific metric and no absolute value is available, you **MUST extract that normalized value as a fallback.** When doing so, it is **CRITICAL** that you capture the full, complex unit (e.g., `t/revenue`, `tonne/kg of product`, `kl/employee`) in the 'Unit' column to provide the necessary context.
 *   **Water Stress Data Segregation Rule:** THERE ARE TWO SEPARATE WATER TABLES. If the report provides water data explicitly identified as being from **"areas of water stress," "water-scarce regions," or "high water risk areas,"** you **MUST** extract the **TOTAL or aggregated figures** for that data into the **"Water Data in Water-Stressed Regions"** table. You must ignore any site-specific or location-level breakdowns for water-stressed data and capture only the final totals. This data MUST NOT be duplicated in the main "Water Data" table.
 *   **Qualitative vs. Quantitative Breakdown Rule:** Apply this logic to both `GHG Gas Breakdown Detail` and `Scope 3 Category Breakdown`:
@@ -170,21 +171,22 @@ You will now act as a strict **Data Availability Auditor**. Your sole purpose is
 
 Before providing your final output, you must perform this internal QC check on your own work. **Do not display the checklist itself in the final answer.**
 
-*   **Comprehensive Scan Check:** Have I scanned all content types, including tables, text, and images, for all data points?
-*   **Language Check:** If the document was not in English, have I translated all my outputs correctly?
-*   **Year Check:** Is ALL the extracted data strictly from a reporting period ending in 2024?
-*   **Column Identification Check:** Have I correctly used the `Time Period Covered` to identify the right data column, even if the column is labeled with a different year (e.g., extracting from a '2023' column for a FY ending in 2024)?
-*   **Transcription Error Check:** Have I transcribed all numbers exactly as they appear in the source?
-*   **Strict Financial Scope Check:** Have I only extracted revenue data and avoided all other financial metrics?
-*   **Data Prioritization Check:** Have I prioritized absolute figures and correctly used normalized/intensity values as a fallback, ensuring the full unit was captured?
+*   **Comprehensive Scan Check:** Have I scanned all content types?
+*   **Language Check:** Have I translated all outputs if necessary?
+*   **Year Check:** Is all data from a period ending in 2024?
+*   **Column Identification Check:** Have I correctly mapped the `Time Period Covered` to the right data column, even if the label is different?
+*   **Granular Breakdown Check:** If a primary metric was missing but its components were present, have I correctly reported the primary as "Not Found" and created new rows for the components?
+*   **Transcription Error Check:** Are all numbers transcribed exactly?
+*   **Strict Financial Scope Check:** Is only revenue data extracted?
+*   **Data Prioritization Check:** Have I correctly used normalized values as a fallback?
 *   **Task 4 Filtering Process Check:** Have I strictly followed the three-step filtering process for Task 4?
-*   **Water Stress Segregation Check:** Have I extracted TOTAL values for water-stressed regions and placed them ONLY in the dedicated table?
-*   **Breakdown Logic Check:** Have I correctly applied the rules for quantitative vs. qualitative breakdowns?
-*   **GHG Total Check:** Have I only populated the 'GHG Total (Scopes 1 & 2)' row if a pre-calculated total was provided?
-*   **Dynamic Waste KPI Check:** Have I created a row for every unique waste KPI?
-*   **Metric-Specific Boundary Check:** Have I captured metric-specific boundaries?
-*   **Business Info Check:** Have I extracted business/segment info verbatim?
-*   **'Not Found' Rule Check:** Have I correctly used "Not Found" for missing values?
-*   **Water Rule Check:** Have I correctly distinguished 'consumption' from 'usage'?
+*   **Water Stress Segregation Check:** Is water stress data correctly isolated and only totals are captured?
+*   **Breakdown Logic Check:** Are qualitative vs. quantitative breakdowns handled correctly?
+*   **GHG Total Check:** Is the 'Total (Scopes 1 & 2)' row only filled if a pre-calculated total was explicitly provided?
+*   **Dynamic Waste KPI Check:** Is there a row for every unique waste KPI?
+*   **Metric-Specific Boundary Check:** Are boundaries captured?
+*   **Business Info Check:** Is business info extracted verbatim?
+*   **'Not Found' Rule Check:** Is "Not Found" used correctly?
+*   **Water Rule Check:** Is 'consumption' vs. 'usage' handled correctly?
 *   **Financial Currency Check:** Does every financial row have a currency?
-*   **Source Tracing Check:** Does every single data point have a page source?
+*   **Source Tracing Check:** Does every data point have a page source?
