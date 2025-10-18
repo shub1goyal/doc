@@ -12,10 +12,10 @@ PM is different from PM 2.5 and PM 10.
 **CRITICAL OVERARCHING PRINCIPIPLES (MUST BE FOLLOWED):**
 
 *   **TRANSLATION TO ENGLISH:** If the source document is in a language other than English, you MUST translate all extracted information into English for the final output.
-*   **TARGET YEAR FOCUS:** EXTRACT DATA FOR THE **2024 REPORTING PERIOD ONLY.** The primary definition of a 2024 period is one that **ends in the 2024 calendar year** (e.g., FY24, 2023-2024).
+*   **TARGET YEAR FOCUS:** EXTRACT DATA FOR THE **2024 REPORTING PERIOD ONLY.** This includes fiscal years such as FY2024, FY24, and reporting periods ending in 2024 (e.g., 2023-2024).
 *   **COMPREHENSIVE SOURCE SCANNING:** You must extract data from all content types within the document, including standard text, tables, charts, graphs, infographics, and footnotes.
-*   **EXACT NUMERICAL TRANSCRIPTION:** You must transcribe all numerical values exactly as they appear in the source document. **Do not round numbers, alter decimal places, or perform any calculations.** The value you extract must be identical to the value in the report.
-*   **CORRECT COLUMN IDENTIFICATION IN TABLES/CHARTS:** You must use the official **Time Period Covered** as the primary source of truth. When extracting from a table, you must find the data column that corresponds to this period. **CRITICAL:** Be aware that for a fiscal year like 'May 2023 - April 2024' (which is a 2024 period), companies often label the data column **'2023'** because the majority of the months fall in that year. You must correctly identify and extract from this '2023' column as it represents our target 2024 reporting period.
+*   **ENVIRONMENTAL vs. FINANCIAL DATA CLASSIFICATION:** If an environmental topic (e.g., Waste Management) is presented as a revenue-generating business segment, its financial figures must be captured ONLY in the Financial Data section (Task 3).
+*   **METICULOUS VERIFICATION IN TABLES/CHARTS:** When extracting from visual data, you must explicitly double-check the alignment of the value with its corresponding "2024" label and metric.
 *   **GRANULARITY:** PRIORITIZE GRANULARITY. Extract the most disaggregated data available. **Do not sum, average, or aggregate numbers yourself.** However, if the report provides a pre-calculated total (e.g., 'Total Scope 1 & 2 Emissions'), you must extract that value into its designated row.
 *   **SOURCE TRACING:** SOURCE TRACING IS MANDATORY. In the "Page Source (PDF#)" column, list all page numbers where the data point is mentioned.
 *   **NUMERICAL FORMATTING:** Present all numerical values without commas (e.g., 1234567).
@@ -27,17 +27,16 @@ PM is different from PM 2.5 and PM 10.
 
 **Task 1: Document Identification & Reporting Scope**
 
-First, identify the document and the specific scope for its **ESG and Environmental data**. You must provide the PDF page number(s) in parentheses for every item.
-
-*   **BRSR Report Hint:** For Indian company reports, pay close attention to the **"BUSINESS RESPONSIBILITY AND SUSTAINABILITY REPORT" (BRSR)** section, as it often contains details on the reporting period and organizational boundaries for non-financial data. However, you must still scan the entire document to ensure all sources are captured.
+First, identify the document and its environmental reporting scope. You must provide the PDF page number(s) in parentheses for every item.
 
 **Document Identification:**
 *   **Company Name:** [Identify the company name] (Page #)
 *   **Document Type:** [Identify the report type: Annual Report, Sustainability Report, or ESG Report] (Page #)
 
 **ESG/Environmental Reporting Scope:**
-*   **Time Period Covered:** [State the full time period for the ESG/Environmental data, e.g., April 1, 2023 to March 31, 2024] (Page #)
-*   **Organizational Boundaries:** [Define the scope specifically for the **ESG and environmental data**. Detail which entities, subsidiaries, joint ventures, or operations are included or excluded from the non-financial data reporting. This may differ from the scope of financial consolidation.] (Page #)
+*   **Primary Reporting Year:** [State the primary year for which data is being reported, e.g., 2024] (Page #)
+*   **Time Period Covered:** [State the full time period, e.g., January 1, 2024 to December 31, 2024] (Page #)
+*   **Organizational Boundaries:** [Define the overall organizational boundaries for the report, noting any material exclusions] (Page #)
 *   **Reporting Frameworks Mentioned:** [List any specific reporting frameworks] (Page #)
 
 ---
@@ -64,13 +63,7 @@ Use the following separate tables to present your findings for environmental met
 | Total Water Withdrawal | | | | | |
 | Total Water Discharge | | | | | |
 | Water Withdrawal by Source Breakdown (extract each source) | | | | | |
-
-**Water Data in Water-Stressed Regions**
-| Metric | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Total Water Consumption in Water-Stressed Regions | | | | | |
-| Total Water Withdrawal in Water-Stressed Regions | | | | | |
-| Total Water Discharge in Water-Stressed Regions | | | | | |
+| Water in Water-Stressed Regions | | | | | |
 
 **Waste Generation Data**
 | Metric (as stated in report) | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
@@ -101,9 +94,6 @@ Use the following separate tables to present your findings for environmental met
 | Non-Renewable Energy Consumption | | | | | |
 
 **Specific Data Point Instructions (Environmental):**
-*   **Granular Data Breakdown Rule:** If a primary metric (e.g., `GHG Scope 1 Emissions`) is not provided as a single, pre-calculated total, but the report instead provides a quantitative breakdown of its individual components (e.g., "emissions from private cars" and "emissions from vessels"), you **MUST** report the primary metric as "Not Found" and create **new, separate rows** for each individual component. Format the new metric as `[Primary Metric Name] - [Component Name from report]`.
-*   **Absolute vs. Normalized Data Prioritization Rule:** Your primary goal is to extract absolute, standalone environmental figures (e.g., `tonnes`, `kilolitres`). However, if a report **only** provides a normalized or intensity-based figure for a specific metric and no absolute value is available, you **MUST extract that normalized value as a fallback.** When doing so, it is **CRITICAL** that you capture the full, complex unit (e.g., `t/revenue`, `tonne/kg of product`, `kl/employee`) in the 'Unit' column to provide the necessary context.
-*   **Water Stress Data Segregation Rule:** THERE ARE TWO SEPARATE WATER TABLES. If the report provides water data explicitly identified as being from **"areas of water stress," "water-scarce regions," or "high water risk areas,"** you **MUST** extract the **TOTAL or aggregated figures** for that data into the **"Water Data in Water-Stressed Regions"** table. You must ignore any site-specific or location-level breakdowns for water-stressed data and capture only the final totals. This data MUST NOT be duplicated in the main "Water Data" table.
 *   **Qualitative vs. Quantitative Breakdown Rule:** Apply this logic to both `GHG Gas Breakdown Detail` and `Scope 3 Category Breakdown`:
     *   **1. For Quantitative Breakdowns:** If the report provides a table with **numerical values** for each item (e.g., each gas or each Scope 3 category), you MUST create a **new row for each individual item**. Use the format `GHG Gas: [Gas Name]` or `Scope 3 Category: [Category Name]` in the Metric column.
     *   **2. For Qualitative-Only Mentions:** If the report only lists the items **without providing individual numbers** (e.g., in a list, text, or diagram), you must capture this concisely in a **single row**. In the `Value` column, list all mentioned items as a comma-separated list (e.g., `CO2, CH4, N2O...`). Set the `Unit` to `N/A`.
@@ -138,32 +128,9 @@ First, provide the business and segment overview, then extract the key financial
 
 ---
 
-**Task 4: Handle Missing Information (Auditor Mode)**
+**Task 4: Handle Missing Information**
 
-You will now act as a strict **Data Availability Auditor**. Your sole purpose is to identify valid reasons why a specific **Environmental or Financial data point** from the tables in Task 2 or Task 3 might be missing from the report. You must follow the three-step filtering process below without deviation.
-
-**Three-Step Filtering Process:**
-
-**Step 1: Identify Candidate Sentences**
-*   Scan the document for sentences that *appear* to be about data availability, omission, or redirection to other sources.
-
-**Step 2: Apply Mandatory Exclusion Filters**
-*   For **every single candidate sentence** you identified in Step 1, you must test it against the following filters. If a sentence matches **any** of these exclusion filters, it **must be deleted** and not included in the final output.
-
-    *   **FILTER A: Is this from the third-party Assurance/Verification Statement?**
-        *   If the sentence is from the auditor's section describing the scope, limitations, or methodology of their *audit*, it is irrelevant boilerplate.
-        *   **Action: DELETE IT.**
-
-    *   **FILTER B: Is this a "Zero-Value" Finding?**
-        *   If the sentence reports that there were zero incidents or no significant impact (e.g., "No environmental spills," "No significant impact on biodiversity"), it is a data point (a value of 0), not an explanation for missing data.
-        *   **Action: DELETE IT.**
-
-    *   **FILTER C: Is this about an Out-of-Scope Topic?**
-        *   If the sentence refers to the absence of social or governance data (e.g., "no data breaches," "no forced recalls"), it is outside the scope of our task.
-        *   **Action: DELETE IT.**
-
-**Step 3: Produce Final Output**
-*   Create a final section titled "Data Availability Notes". This section will contain **only the sentences that passed all three exclusion filters** in Step 2. If no sentences pass the filters, state that "No relevant data availability notes were found."
+Create a final section titled "Data Availability Notes". In this section, list any instances where the report explicitly states that **Environmental or Financial data** is unavailable, omits it for a material reason, or directs the reader to another source. If an external report or a web link is provided for the missing data, you MUST include that information and the full URL if available. Do not note the absence of social or governance data.
 
 ---
 
@@ -171,22 +138,18 @@ You will now act as a strict **Data Availability Auditor**. Your sole purpose is
 
 Before providing your final output, you must perform this internal QC check on your own work. **Do not display the checklist itself in the final answer.**
 
-*   **Comprehensive Scan Check:** Have I scanned all content types?
-*   **Language Check:** Have I translated all outputs if necessary?
-*   **Year Check:** Is all data from a period ending in 2024?
-*   **Column Identification Check:** Have I correctly mapped the `Time Period Covered` to the right data column, even if the label is different?
-*   **Granular Breakdown Check:** If a primary metric was missing but its components were present, have I correctly reported the primary as "Not Found" and created new rows for the components?
-*   **Transcription Error Check:** Are all numbers transcribed exactly?
-*   **Strict Financial Scope Check:** Is only revenue data extracted?
-*   **Data Prioritization Check:** Have I correctly used normalized values as a fallback?
-*   **Task 4 Filtering Process Check:** Have I strictly followed the three-step filtering process for Task 4?
-*   **Water Stress Segregation Check:** Is water stress data correctly isolated and only totals are captured?
-*   **Breakdown Logic Check:** Are qualitative vs. quantitative breakdowns handled correctly?
-*   **GHG Total Check:** Is the 'Total (Scopes 1 & 2)' row only filled if a pre-calculated total was explicitly provided?
-*   **Dynamic Waste KPI Check:** Is there a row for every unique waste KPI?
-*   **Metric-Specific Boundary Check:** Are boundaries captured?
-*   **Business Info Check:** Is business info extracted verbatim?
-*   **'Not Found' Rule Check:** Is "Not Found" used correctly?
-*   **Water Rule Check:** Is 'consumption' vs. 'usage' handled correctly?
-*   **Financial Currency Check:** Does every financial row have a currency?
-*   **Source Tracing Check:** Does every data point have a page source?
+*   **Comprehensive Scan Check:** Have I scanned all content types, including tables, text, and images, for all data points?
+*   **Language Check:** If the document was not in English, have I translated all my outputs correctly?
+*   **Year Check:** Is ALL the extracted data strictly for the 2024 reporting period (or FY24, etc.)?
+*   **Strict Financial Scope Check:** Have I only extracted revenue data and completely avoided all other financial metrics like profit, assets, etc.?
+*   **Breakdown Logic Check:** Have I correctly applied the two-part rule for both GHG Gases and Scope 3, using separate rows for quantitative values and a single, comma-separated list for qualitative-only mentions?
+*   **GHG Total Check:** Have I only populated the 'GHG Total (Scopes 1 & 2)' row if a pre-calculated total was explicitly provided?
+*   **Dynamic Waste KPI Check:** Have I created a separate row for every single waste KPI using exact terminology?
+*   **Metric-Specific Boundary Check:** Have I captured this detail in the 'Reporting Boundary' column?
+*   **Business Info Check:** Have I extracted business/segment info verbatim and only for segments with financial data?
+*   **Table/Chart Verification Check:** For every numerical value from a visual, have I re-traced the row/column to confirm it aligns with the "2024" header?
+*   **'Not Found' Rule Check:** For any metric where the 2024 value was missing, have I correctly reported the Value as "Not Found"?
+*   **Water Rule Check:** Have I correctly applied the specific rule distinguishing 'consumption' from 'usage'?
+*   **Financial Currency Check:** Does every financial data row have a currency specified in the "Unit / Currency" column?
+*   **Source Tracing Check:** Does every single row in my final tables and every item in Task 1/3 have a non-empty Page Source (PDF#)?
+*   **Transcription Error Check:** Have I performed one last scan of my numbers against the source document to catch errors?

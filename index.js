@@ -114,6 +114,10 @@ const removeAllFilesButton = safeGetElement('remove-all-files');
 const dragOverlay = safeGetElement('drag-overlay');
 const resetSessionButton = safeGetElement('reset-session-button');
 
+// Scroll Navigation Elements
+const scrollToTopButton = safeGetElement('scroll-to-top');
+const scrollToBottomButton = safeGetElement('scroll-to-bottom');
+
 // Prompt Prefix Elements
 const promptPrefixButton = safeGetElement('prompt-prefix-button');
 const promptPrefixModal = safeGetElement('prompt-prefix-modal');
@@ -224,6 +228,15 @@ safeAddEventListener(apiKeyButton, 'click', openApiKeyModal);
 safeAddEventListener(apiKeyCancelButton, 'click', closeApiKeyModal);
 safeAddEventListener(apiKeyForm, 'submit', saveApiKey);
 
+// Scroll Navigation Event Listeners
+// safeAddEventListener(scrollToTopButton, 'click', scrollToTop);
+// safeAddEventListener(scrollToBottomButton, 'click', scrollToBottom);
+
+// Add scroll event listener to chat container for auto-scroll detection
+// if (chatContainer) {
+//     chatContainer.addEventListener('scroll', handleChatScroll);
+// }
+
 // Initialize the chat with a welcome message
 initializeChat();
 
@@ -233,9 +246,50 @@ initializeChat();
 // Initialize prompt prefix indicator
 updateActivePrefixIndicator();
 
+// Add event listener for clipboard paste events
+if (messageInput) {
+    messageInput.addEventListener('paste', handlePasteEvent);
+}
+
+// Initialize scroll position tracking
+// if (chatContainer) {
+//     // Set initial scroll position to bottom
+//     setTimeout(() => {
+//         chatContainer.scrollTop = chatContainer.scrollHeight;
+//     }, 100);
+//     
+//     // Initialize isUserAtBottom
+//     isUserAtBottom = true;
+// }
+
 // Essential Functions
 
-// Removed initializeDefaultPrompts function since we're loading from files now
+// Function to handle clipboard paste events
+function handlePasteEvent(event) {
+    const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+    
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        
+        // Check if the item is a file (image)
+        if (item.kind === 'file') {
+            const file = item.getAsFile();
+            
+            // Check if it's an image file
+            if (file && file.type.startsWith('image/')) {
+                // Prevent the default paste behavior
+                event.preventDefault();
+                
+                // Process the image file
+                processFileUpload(file);
+                
+                // Show a notification
+                showToast('Image pasted and added to upload queue!', 'success');
+            }
+        }
+    }
+}
+
 /**
  * Prompt Prefix Management Functions
  */
@@ -1124,6 +1178,10 @@ function render() {
         return;
     }
     
+    // Save current scroll position before rendering
+    const previousScrollTop = chatContainer.scrollTop;
+    const previousScrollHeight = chatContainer.scrollHeight;
+    
     chatContainer.innerHTML = '';
     
     messages.forEach(message => {
@@ -1260,11 +1318,9 @@ function render() {
     // Scroll to bottom with a delay to ensure content is rendered
     if (chatContainer) {
         // Only scroll to bottom if user is near the bottom already
-        const isNearBottom = chatContainer.scrollTop + chatContainer.clientHeight >= chatContainer.scrollHeight - 100;
-        
-        // Use a small delay to ensure content is rendered before scrolling
+        // This respects the project specification for chat scroll behavior
         setTimeout(() => {
-            if (isNearBottom) {
+            if (isUserAtBottom) {
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }, 10);
