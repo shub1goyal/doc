@@ -13,18 +13,17 @@ PM is different from PM 2.5 and PM 10.
 
 *   **HANDLING MULTIPLE & CONFLICTING DATA:** You must treat every unique numerical value for a metric as a distinct data point.
     *   **If you find multiple, *different* numerical values for the same metric** (e.g., 'Total Water Consumption' is listed as 2130613 kL in a table and 2162342 m³ in a summary box), you **MUST create a separate row for each unique value**. Do not try to choose one over the other or perform conversions. Report each finding exactly as it appears in the source.
+*   **BOUNDARY HIERARCHY:** You must prioritize the most specific reporting boundary available. If the section containing environmental data specifies its own boundary (e.g., "This data covers our manufacturing operations only"), that boundary **MUST** be used in the 'Reporting Boundary' column for all relevant environmental metrics. This specific boundary takes precedence over the general organizational boundary of the entire report.
 *   **COMPREHENSIVE DATA CONSOLIDATION:** This rule applies **only when you find the *exact same numerical value* for a metric on multiple pages.** In this case, you MUST consolidate them into a single row and list all relevant page numbers in the "Page Source (PDF#)" column (e.g., 15, 42).
 *   **SYSTEMATIC DOCUMENT REVIEW PROCESS:** You must follow a multi-pass process. **First**, conduct a complete scan of the entire document to identify all tables, charts, and text sections containing potential environmental and financial data for 2024. **Second**, perform the detailed extraction, applying the rules above for any metric found. **Finally**, before concluding, perform a final verification pass to ensure no data has been missed.
 *   **TRANSLATION TO ENGLISH:** If the source document is in a language other than English, you MUST translate all extracted information into English for the final output.
 *   **TARGET YEAR FOCUS:** EXTRACT DATA FOR THE **2024 REPORTING PERIOD ONLY.** This includes fiscal years such as FY2024, FY24, and reporting periods ending in 2024 (e.g., 2023-2024).
 *   **COMPREHENSIVE SOURCE SCANNING:** You must extract data from all content types within the document, including standard text, tables, charts, graphs, infographics, and footnotes.
-*   **ENVIRONMENTAL vs. FINANCIAL DATA CLASSIFICATION:** If an environmental topic (e.g., Waste Management) is presented as a revenue-generating business segment, its financial figures must be captured ONLY in the Financial Data section (Task 3).
 *   **METICULOUS VERIFICATION IN TABLES/CHARTS:** When extracting from visual data, you must explicitly double-check the alignment of the value with its corresponding "2024" label and metric.
 *   **GRANULARITY:** PRIORITIZE GRANULARITY. Extract the most disaggregated data available. **Do not sum, average, or aggregate numbers yourself.** However, if the report provides a pre-calculated total (e.g., 'Total Scope 1 & 2 Emissions'), you must extract that value into its designated row.
 *   **SOURCE TRACING:** SOURCE TRACING IS MANDATORY. In the "Page Source (PDF#)" column, list all page numbers where the data point is mentioned.
 *   **NUMERICAL FORMATTING:** Present all numerical values without commas (e.g., 1234567).
 *   **DATA POINT PRESENCE CHECK:** For each data point, if the 2024 quantitative value is missing, blank, or a dash in a table, report the Value as "Not Found".
-*   **PRIORITIZE ACCURACY OVER EFFICIENCY:** Take the time necessary to ensure the extracted data is correct and completely fulfills the instructions.
 
 ---
 
@@ -34,12 +33,13 @@ First, identify the document and its environmental reporting scope. You must pro
 
 **Document Identification:**
 *   **Company Name:** [Identify the company name] (Page #)
-*   **Document Type:** [Identify the report type: Annual Report, Sustainability Report, or ESG Report] (Page #)
+*   **Document Type:** [Identify the report type. Common types include Annual Report, Sustainability Report, or ESG Report. If the primary ESG content is in a distinctly named section (e.g., a **'Business Responsibility and Sustainability Report (BRSR)'** inside an Annual Report), you must specify this, for example: 'Annual Report containing a BRSR section'.] (Page #)
 
 **ESG/Environmental Reporting Scope:**
 *   **Primary Reporting Year:** [State the primary year for which data is being reported, e.g., 2024] (Page #)
 *   **Time Period Covered:** [State the full time period, e.g., January 1, 2024 to December 31, 2024] (Page #)
-*   **Organizational Boundaries:** [Define the overall organizational boundaries for the report, noting any material exclusions] (Page #)
+*   **Overall Organizational Boundaries:** [Define the overall organizational boundaries for the entire report] (Page #)
+*   **Specific Environmental Data Boundary (if different):** [If the environmental data section specifies a different boundary than the overall report, state it here. Otherwise, state "Same as overall boundary".] (Page #)
 *   **Reporting Frameworks Mentioned:** [List any specific reporting frameworks] (Page #)
 
 ---
@@ -55,9 +55,6 @@ Use the following separate tables to present your findings for environmental met
 | GHG Scope 2 Emissions (Location-Based) | | | | | |
 | GHG Scope 2 Emissions (Market-Based) | | | | | |
 | GHG Total Emissions (Scopes 1 & 2) | | | | | |
-| GHG Biogenic Emissions | | | | | |
-| GHG Gas Breakdown Detail | | | | | |
-| Scope 3 Category Breakdown | | | | | |
 
 **Water Data**
 | Metric | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
@@ -65,75 +62,25 @@ Use the following separate tables to present your findings for environmental met
 | Total Water Consumption | | | | | |
 | Total Water Withdrawal | | | | | |
 | Total Water Discharge | | | | | |
-| Water Withdrawal by Source Breakdown (extract each source) | | | | | |
-| Water in Water-Stressed Regions | | | | | |
 
-**Waste Generation Data**
-| Metric (as stated in report) | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-
-**Waste Disposal & Treatment Data**
-| Metric (as stated in report) | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-
-**Air & Water Pollutants Data**
-| Metric | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Air Pollutants: NOx | | | | | |
-| Air Pollutants: SOx | | | | | |
-| Air Pollutants: VOC | | | | | |
-| Air Pollutants: PM | | | | | |
-| Air Pollutants: PM2.5 | | | | | |
-| Air Pollutants: PM10 | | | | | |
-| Water Pollutants (extract all provided) | | | | | |
-
-**Energy Data**
-| Metric | Value | Unit | Page Source (PDF#) | Section | Reporting Boundary |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Total Energy Consumption | | | | | |
-| Energy Consumption Breakdown (extract each source) | | | | | |
-| Energy Consumption from Biomass | | | | | |
-| Renewable Energy Consumption | | | | | |
-| Non-Renewable Energy Consumption | | | | | |
+**(And all other environmental tables as previously defined...)**
 
 **Specific Data Point Instructions (Environmental):**
-*   **Qualitative vs. Quantitative Breakdown Rule:** Apply this logic to both `GHG Gas Breakdown Detail` and `Scope 3 Category Breakdown`:
-    *   **1. For Quantitative Breakdowns:** If the report provides a table with **numerical values** for each item (e.g., each gas or each Scope 3 category), you MUST create a **new row for each individual item**. Use the format `GHG Gas: [Gas Name]` or `Scope 3 Category: [Category Name]` in the Metric column.
-    *   **2. For Qualitative-Only Mentions:** If the report only lists the items **without providing individual numbers** (e.g., in a list, text, or diagram), you must capture this concisely in a **single row**. In the `Value` column, list all mentioned items as a comma-separated list (e.g., `CO2, CH4, N2O...`). Set the `Unit` to `N/A`.
-*   **GHG Total (Scope 1 & 2) Rule:** Only populate the 'GHG Total Emissions (Scopes 1 & 2)' row if the report **explicitly provides a pre-calculated, combined figure** for Scope 1 and 2. Do NOT calculate this value yourself by adding the individual Scope 1 and Scope 2 figures.
-*   **GHG Scope 2 Ambiguity Rule:** If a report provides a single figure for 'Scope 2 Emissions' without specifying whether it is 'location-based' or 'market-based', you MUST report this value in the 'GHG Scope 2 Emissions (Location-Based)' row.
-*   **Waste Data: Dynamic KPI Extraction Rule:** You must capture **every individual waste KPI** presented in the report by creating a new row for each, using the exact terminology from the source document. Do NOT infer classifications. Place metrics with keywords like `Generated` in the **Generation** table, and `Recycled`, `Landfilled`, `Disposed` in the **Disposal** table.
-*   **Metric-Specific Boundary Rule:** In the 'Reporting Boundary' column, note any specific boundaries mentioned for an individual metric.
-*   **Water Consumption vs. Usage Rule:** The term 'water usage' is not equivalent to 'water consumption'. Only report a value for 'Total Water consumption' if the document explicitly labels it as 'consumption' or provides direct evidence that they are the same.
+*   **Section Naming Rule:** In the 'Section' column for each data point, you **MUST** record the name of the specific chapter or subsection from which the data was extracted (e.g., 'Environmental Performance', 'Our Planet', 'BRSR Principle 6', 'GRI Content Index'). This provides more precise source tracing.
+*   **Metric-Specific Boundary Rule:** For each environmental metric, actively search for text that limits its scope (e.g., a footnote saying "Data for our Indian plants only"). If a specific boundary is found for a single metric, it overrides the general environmental data boundary for that row only. If none is found, use the 'Specific Environmental Data Boundary' identified in Task 1.
+*   **(All other specific environmental rules as previously defined...)**
 
 ---
 
 **Task 3: Extract Business Context & Financial Data**
 
-First, provide the business and segment overview, then extract the key financial figures for the 2024 reporting period.
-
-**Business & Segment Overview:**
-*   **Business Overview:** [Provide a concise, near-verbatim summary of the company's main business activities from the document. Do not use your own words.] (Page #)
-*   **Segment Information/Description:** [For each business segment **that has a financial revenue breakdown provided in the document**, list its name and provide a brief, explicit description of what it does, quoted or closely paraphrased from the text. If information for one segment is found on multiple pages, list them as separate line items.] (Page #)
-
-**Financial Data Table:**
-| Metric | Value | Unit / Currency | Page Source (PDF#) | Section |
-| :--- | :--- | :--- | :--- | :--- |
-| Consolidated Revenue | | | | |
-| Segment Revenue - [Segment Name 1] | | | | |
-| Segment Revenue - [Segment Name 2] | | | | |
-| Product Revenue - [Product Name 1] | | | | |
-
-**Specific Data Point Instructions (Financial):**
-*   **Strict Financial Scope Rule: EXTRACT REVENUE DATA ONLY.** You are strictly forbidden from extracting any other financial metrics, even if they are present in the same table or statement. This includes, but is not limited to: **profit (gross, operating, net), profit before tax, total assets, liabilities, equity, EBITDA, and cash flow.** Your task is limited to the specified top-line revenue figures.
-*   **Financial Data Currency Rule:** For all financial data points, the currency (e.g., USD, EUR, JPY) **must be specified** in the "Unit / Currency" column. If the currency is mentioned (e.g., "in millions of USD"), capture it. If no currency is specified, enter "Not Specified".
-*   **Financial Data Breakdown Rule:** Extract the total Consolidated Revenue. Then, for segment or product breakdowns, create a **new row for each individual segment or product line** reported. Use the format 'Segment Revenue - [Name]' or 'Product Revenue - [Name]' in the Metric column.
+**(This task remains the same as the previous version.)**
 
 ---
 
 **Task 4: Handle Missing Information**
 
-Create a final section titled "Data Availability Notes". In this section, list any instances where the report explicitly states that **Environmental or Financial data** is unavailable, omits it for a material reason, or directs the reader to another source. If an external report or a web link is provided for the missing data, you MUST include that information and the full URL if available. Do not note the absence of social or governance data.
+**(This task remains the same as the previous version.)**
 
 ---
 
@@ -141,20 +88,11 @@ Create a final section titled "Data Availability Notes". In this section, list a
 
 Before providing your final output, you must perform this internal QC check on your own work. **Do not display the checklist itself in the final answer.**
 
-*   **Comprehensive Scan Check:** Have I scanned all content types, including tables, text, and images, for all data points?
-*   **Language Check:** If the document was not in English, have I translated all my outputs correctly?
-*   **Year Check:** Is ALL the extracted data strictly for the 2024 reporting period (or FY24, etc.)?
+*   **Comprehensive Scan Check:** Have I scanned all content types for all data points?
+*   **Year Check:** Is ALL the extracted data strictly for the 2024 reporting period?
 *   **Conflicting Data Check:** If I found multiple different values for the same metric name, have I correctly created a separate row for each one?
 *   **Data Consolidation Check:** If I found the exact same value on multiple pages, have I correctly consolidated it into a single row with all page sources listed?
-*   **Strict Financial Scope Check:** Have I only extracted revenue data and completely avoided all other financial metrics like profit, assets, etc.?
-*   **Breakdown Logic Check:** Have I correctly applied the two-part rule for both GHG Gases and Scope 3, using separate rows for quantitative values and a single, comma-separated list for qualitative-only mentions?
-*   **GHG Total Check:** Have I only populated the 'GHG Total (Scopes 1 & 2)' row if a pre-calculated total was explicitly provided?
-*   **Dynamic Waste KPI Check:** Have I created a separate row for every single waste KPI using exact terminology?
-*   **Metric-Specific Boundary Check:** Have I captured this detail in the 'Reporting Boundary' column?
-*   **Business Info Check:** Have I extracted business/segment info verbatim and only for segments with financial data?
-*   **Table/Chart Verification Check:** For every numerical value from a visual, have I re-traced the row/column to confirm it aligns with the "2024" header?
-*   **'Not Found' Rule Check:** For any metric where the 2024 value was missing, have I correctly reported the Value as "Not Found"?
-*   **Water Rule Check:** Have I correctly applied the specific rule distinguishing 'consumption' from 'usage'?
-*   **Financial Currency Check:** Does every financial data row have a currency specified in the "Unit / Currency" column?
-*   **Source Tracing Check:** Does every single row in my final tables and every item in Task 1/3 have a non-empty Page Source (PDF#)?
-*   **Transcription Error Check:** Have I performed one last scan of my numbers against the source document to catch errors?
+*   **Boundary Hierarchy Check:** Have I correctly identified and applied the most specific boundary for the environmental data, prioritizing the environmental section's scope over the whole report's scope?
+*   **BRSR/Section Check:** Have I correctly identified the document type (especially if it contains a BRSR) and populated the 'Section' column for every data point?
+*   **Strict Financial Scope Check:** Have I only extracted revenue data?
+*   **(All other QC checks as previously defined...)**
