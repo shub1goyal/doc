@@ -11,6 +11,8 @@ PM is different from PM 2.5 and PM 10.
 
 **CRITICAL OVERARCHING PRINCIPIPLES (MUST BE FOLLOWED):**
 
+*   **COMPREHENSIVE DATA CONSOLIDATION:** You must scan the entire document for every required metric. If a single data point (e.g., 'Total Water Consumption') is mentioned on multiple pages (e.g., in a table on page 15 and in the text on page 42), you **MUST consolidate this into a single row** in the final table. The `Value` should be taken from the most detailed source (typically a table), and the "Page Source (PDF#)" column **MUST list all page numbers where the data point appears**, separated by a comma (e.g., 15, 42).
+*   **SYSTEMATIC DOCUMENT REVIEW PROCESS:** You must follow a multi-pass process. **First**, conduct a complete scan of the entire document to identify all tables, charts, and text sections containing potential environmental and financial data for 2024. **Second**, perform the detailed extraction, applying the **COMPREHENSIVE DATA CONSOLIDATION** rule for any metric found in multiple locations. **Finally**, before concluding, perform a final verification pass to ensure no data has been missed.
 *   **TRANSLATION TO ENGLISH:** If the source document is in a language other than English, you MUST translate all extracted information into English for the final output.
 *   **TARGET YEAR FOCUS:** EXTRACT DATA FOR THE **2024 REPORTING PERIOD ONLY.** This includes fiscal years such as FY2024, FY24, and reporting periods ending in 2024 (e.g., 2023-2024).
 *   **COMPREHENSIVE SOURCE SCANNING:** You must extract data from all content types within the document, including standard text, tables, charts, graphs, infographics, and footnotes.
@@ -20,7 +22,6 @@ PM is different from PM 2.5 and PM 10.
 *   **SOURCE TRACING:** SOURCE TRACING IS MANDATORY. In the "Page Source (PDF#)" column, list all page numbers where the data point is mentioned.
 *   **NUMERICAL FORMATTING:** Present all numerical values without commas (e.g., 1234567).
 *   **DATA POINT PRESENCE CHECK:** For each data point, if the 2024 quantitative value is missing, blank, or a dash in a table, report the Value as "Not Found".
-*   **REVISIT ALL PAGE CONTENT:** Assume no prior knowledge. Systematically review the entire document to ensure no data is missed.
 *   **PRIORITIZE ACCURACY OVER EFFICIENCY:** Take the time necessary to ensure the extracted data is correct and completely fulfills the instructions.
 
 ---
@@ -141,6 +142,7 @@ Before providing your final output, you must perform this internal QC check on y
 *   **Comprehensive Scan Check:** Have I scanned all content types, including tables, text, and images, for all data points?
 *   **Language Check:** If the document was not in English, have I translated all my outputs correctly?
 *   **Year Check:** Is ALL the extracted data strictly for the 2024 reporting period (or FY24, etc.)?
+*   **Data Consolidation Check:** Have I verified that for every data point extracted, I have searched the entire document for other mentions and have included **all** page numbers in the source column?
 *   **Strict Financial Scope Check:** Have I only extracted revenue data and completely avoided all other financial metrics like profit, assets, etc.?
 *   **Breakdown Logic Check:** Have I correctly applied the two-part rule for both GHG Gases and Scope 3, using separate rows for quantitative values and a single, comma-separated list for qualitative-only mentions?
 *   **GHG Total Check:** Have I only populated the 'GHG Total (Scopes 1 & 2)' row if a pre-calculated total was explicitly provided?
