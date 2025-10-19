@@ -13,9 +13,14 @@ PM is different from PM 2.5 and PM 10.
 
 *   **TRANSLATION TO ENGLISH:** If the source document is in a language other than English, you MUST translate all extracted information into English for the final output.
 *   **TARGET YEAR FOCUS:** EXTRACT DATA FOR THE **2024 REPORTING PERIOD ONLY.** The primary definition of a 2024 period is one that **ends in the 2024 calendar year** (e.g., FY24, 2023-2024).
+*   **SCOPE VALIDATION & HIERARCHY:** You must prioritize the specific boundary defined for the **ESG/environmental data** over any general financial consolidation scope mentioned elsewhere. After extracting the verbatim boundary description, you must perform a validation by cross-referencing it with other information in the report (e.g., lists of subsidiaries, operational overview). You will then classify this boundary and explain your reasoning.
+    *   Classify as **'Full'** if the stated scope appears to cover all the company's relevant operations.
+    *   Classify as **'Partial'** if the scope explicitly excludes certain entities (e.g., "covers 5 of our 8 subsidiaries").
+    *   Classify as **'Unclear'** if the scope uses vague language that cannot be definitively verified (e.g., "covers our major plants").
 *   **COMPREHENSIVE SOURCE SCANNING:** You must extract data from all content types within the document, including standard text, tables, charts, graphs, infographics, and footnotes.
 *   **EXACT NUMERICAL TRANSCRIPTION:** You must transcribe all numerical values exactly as they appear in the source document. **Do not round numbers, alter decimal places, or perform any calculations.** The value you extract must be identical to the value in the report.
 *   **CORRECT COLUMN IDENTIFICATION IN TABLES/CHARTS:** You must use the official **Time Period Covered** as the primary source of truth. When extracting from a table, you must find the data column that corresponds to this period. **CRITICAL:** Be aware that for a fiscal year like 'May 2023 - April 2024' (which is a 2024 period), companies often label the data column **'2023'** because the majority of the months fall in that year. You must correctly identify and extract from this '2023' column as it represents our target 2024 reporting period.
+*   **HANDLING MULTIPLE & CONFLICTING DATA:** If you find two or more different numerical values for the exact same metric name within the document (e.g., in different tables, charts, or text), you MUST create a separate row for each distinct value. Each row must capture the specific value, unit, and page source as found in its location. Do not attempt to resolve the conflict or choose one value over the other.
 *   **GRANULARITY:** PRIORITIZE GRANULARITY. Extract the most disaggregated data available. **Do not sum, average, or aggregate numbers yourself.** However, if the report provides a pre-calculated total (e.g., 'Total Scope 1 & 2 Emissions'), you must extract that value into its designated row.
 *   **SOURCE TRACING:** SOURCE TRACING IS MANDATORY. In the "Page Source (PDF#)" column, list all page numbers where the data point is mentioned.
 *   **NUMERICAL FORMATTING:** Present all numerical values without commas (e.g., 1234567).
@@ -37,7 +42,9 @@ First, identify the document and the specific scope for its **ESG and Environmen
 
 **ESG/Environmental Reporting Scope:**
 *   **Time Period Covered:** [State the full time period for the ESG/Environmental data, e.g., April 1, 2023 to March 31, 2024] (Page #)
-*   **Organizational Boundaries:** [Define the scope specifically for the **ESG and environmental data**. Detail which entities, subsidiaries, joint ventures, or operations are included or excluded from the non-financial data reporting. This may differ from the scope of financial consolidation.] (Page #)
+*   **Boundary Description:** [Extract the verbatim description of the organizational boundary for the ESG/environmental data.] (Page #)
+*   **Boundary Completeness Classification:** [Classify as 'Full', 'Partial', or 'Unclear' based on your contextual validation.]
+*   **Validation Notes:** [**Mandatory field.** Explain the reasoning for your classification. For example, "Classification is 'Partial' because the boundary states it covers 5 plants, but the company overview on page X mentions a total of 7 plants."]
 *   **Reporting Frameworks Mentioned:** [List any specific reporting frameworks] (Page #)
 
 ---
