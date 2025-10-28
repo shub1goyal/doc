@@ -3,8 +3,20 @@
     {
       "id": "esg-metrics-1",
       "name": "ESG Metrics Analysis",
-      "file": "esg_metrics_prompt.txt",
-      "description": "Analyze all ESG metrics in documents"
+      "file": "esg_2024.txt",
+      "description": "Analyze all ESG metrics in documents for 2024"
+    },
+    {
+      "id": "esg-metrics-2",
+      "name": "ESG Risk Mapping",
+      "file": "esg_2023.txt",
+      "description": "Analyze all ESG metrics in documents for 2023"
+    },
+    {
+      "id": "esg-metrics-3",
+      "name": "ESG",
+      "file": "esg_2022.txt",
+      "description": "Analyze all ESG metrics in documents for 2022"
     }
   ]
 }
