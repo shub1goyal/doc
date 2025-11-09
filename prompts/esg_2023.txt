@@ -11,6 +11,8 @@ PM is different from PM 2.5 and PM 10.
 
 **CRITICAL OVERARCHING PRINCIPIPLES (MUST BE FOLLOWED):**
 
+*   **ABSOLUTE RULE ADHERENCE:** Every instruction in this prompt is a non-negotiable command. Failure to follow any rule precisely is a critical failure. Do not interpret, infer, or deviate.
+*   **EXHAUSTIVE METRIC SEARCH:** You MUST scan the entire document for every single metric. Do not stop after finding the first value. Your goal is to find ALL mentions of a data point to capture potential variations or identical values on different pages.
 *   **TRANSLATION TO ENGLISH:** If the source document is in a language other than English, you MUST translate all extracted information into English for the final output.
 *   **TARGET YEAR FOCUS:** EXTRACT DATA FOR THE **2023 REPORTING PERIOD ONLY.** The primary definition of a 2023 period is one that **ends in the 2023 calendar year** (e.g., FY23, 2022-2023).
 *   **SCOPE VALIDATION & HIERARCHY:** You must prioritize the specific boundary defined for the **ESG/environmental data** over any general financial consolidation scope mentioned elsewhere. After extracting the verbatim boundary description, you must perform a validation by cross-referencing it with other information in the report (e.g., lists of subsidiaries, operational overview). You will then classify this boundary and explain your reasoning.
@@ -34,6 +36,7 @@ PM is different from PM 2.5 and PM 10.
 
 First, identify the document and the specific scope for its **ESG and Environmental data**. You must provide the PDF page number(s) in parentheses for every item.
 
+*   **Reporting Scope Hint:** Look for sections titled "About this Report," "Scope of Reporting," or similar introductory chapters that define the organizational and temporal boundaries for the data.
 *   **BRSR Report Hint:** For Indian company reports, pay close attention to the **"BUSINESS RESPONSIBILITY AND SUSTAINABILITY REPORT" (BRSR)** section, as it often contains details on the reporting period and organizational boundaries for non-financial data. However, you must still scan the entire document to ensure all sources are captured.
 
 **Document Identification:**
@@ -118,7 +121,7 @@ Use the following separate tables to present your findings for environmental met
 *   **GHG Scope 2 Ambiguity Rule:** If a report provides a single figure for 'Scope 2 Emissions' without specifying whether it is 'location-based' or 'market-based', you MUST report this value in the 'GHG Scope 2 Emissions (Location-Based)' row.
 *   **Waste Data: Dynamic KPI Extraction Rule:** You must capture **every individual waste KPI** presented in the report by creating a new row for each, using the exact terminology from the source document. Do NOT infer classifications. Place metrics with keywords like `Generated` in the **Generation** table, and `Recycled`, `Landfilled`, `Disposed` in the **Disposal** table.
 *   **Metric-Specific Boundary Rule:** In the 'Reporting Boundary' column, note any specific boundaries mentioned for an individual metric.
-*   **Water Consumption vs. Usage Rule:** The term 'water usage' is not equivalent to 'water consumption'. Only report a value for 'Total Water consumption' if the document explicitly labels it as 'consumption' or provides direct evidence that they are the same.
+*   **Water Consumption vs. Usage Rule:** The term 'water usage' is **NOT** equivalent to 'water consumption'. You are strictly forbidden from placing a value for 'water usage' into the 'Total Water Consumption' metric. Only report a value if the document explicitly labels it as 'consumption'. If only 'usage' is found, report 'Total Water Consumption' as "Not Found".
 
 ---
 
@@ -129,6 +132,7 @@ First, provide the business and segment overview, then extract the key financial
 **Business & Segment Overview:**
 *   **Business Overview:** [Provide a concise, near-verbatim summary of the company's main business activities from the document. Do not use your own words.] (Page #)
 *   **Segment Information/Description:** [For each business segment **that has a financial revenue breakdown provided in the document**, list its name and provide a brief, explicit description of what it does, quoted or closely paraphrased from the text. If information for one segment is found on multiple pages, list them as separate line items.] (Page #)
+*   **Outsourcing Information:** [Identify and extract any explicit statements from the document regarding outsourced business segments, operations, or functions. Quote the statement verbatim.] (Page #)
 
 **Financial Data Table:**
 | Metric | Value | Unit / Currency | Page Source (PDF#) | Section |
@@ -178,6 +182,7 @@ You will now act as a strict **Data Availability Auditor**. Your sole purpose is
 
 Before providing your final output, you must perform this internal QC check on your own work. **Do not display the checklist itself in the final answer.**
 
+*   **Final Quantitative Data Sweep:** Have I performed a final review of all tables, charts, and infographics to ensure no quantitative data points for the target year were missed?
 *   **Comprehensive Scan Check:** Have I scanned all content types?
 *   **Language Check:** Have I translated all outputs if necessary?
 *   **Year Check:** Is all data from a period ending in 2023?
