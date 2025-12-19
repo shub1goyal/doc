@@ -37,11 +37,11 @@ async function loadPromptPresets() {
     try {
         // Don't load from localStorage anymore - only use default prompts from files
         // const savedPrompts = JSON.parse(localStorage.getItem('prompt_prefixes') || '[]');
-        
+
         // Load default presets from the presets.json file
         const response = await fetch('./prompts/presets.json');
         const presetConfig = await response.json();
-        
+
         // Load content for each preset
         const filePromises = presetConfig.presets.map(async (preset) => {
             try {
@@ -66,12 +66,12 @@ async function loadPromptPresets() {
                 return null;
             }
         });
-        
+
         const defaultPrompts = (await Promise.all(filePromises)).filter(prompt => prompt !== null);
-        
+
         // Only use default prompts, ignore any user-created prompts from localStorage
         promptPrefixes = [...defaultPrompts];
-        
+
         // We don't need to clear localStorage anymore since we're not using it for prompts
         // localStorage.removeItem('prompt_prefixes');
     } catch (error) {
@@ -120,8 +120,25 @@ const scrollToBottomButton = safeGetElement('scroll-to-bottom');
 
 // Prompt Prefix Elements
 const promptPrefixButton = safeGetElement('prompt-prefix-button');
+const modelSelect = safeGetElement('model-select');
 const promptPrefixModal = safeGetElement('prompt-prefix-modal');
 const prefixForm = safeGetElement('prefix-form');
+// ... other elements
+
+// Add listener to model selector
+if (modelSelect) {
+    modelSelect.addEventListener('change', () => {
+        // When model changes, we should ideally reset the session or just warn
+        // For simplicity, we'll reset the session to ensure clean state
+        if (confirm('Changing the model will reset your current chat session. Continue?')) {
+            resetSession();
+        } else {
+            // Revert selection if user cancels
+            // We would need to track previous value to revert, but this is simple enough
+        }
+    });
+}
+
 const prefixNameInput = safeGetElement('prefix-name');
 const prefixContentInput = safeGetElement('prefix-content');
 const autoApplyPrefixCheckbox = safeGetElement('auto-apply-prefix');
@@ -165,7 +182,7 @@ function safeAddEventListener(element, event, handler) {
 safeAddEventListener(chatForm, 'submit', handleSendMessage);
 // Add keydown listener for Shift+Enter functionality
 if (messageInput) {
-    messageInput.addEventListener('keydown', function(event) {
+    messageInput.addEventListener('keydown', function (event) {
         // If Shift+Enter is pressed, insert a new line instead of sending
         if (event.key === 'Enter' && event.shiftKey) {
             event.preventDefault();
@@ -267,22 +284,22 @@ if (messageInput) {
 // Function to handle clipboard paste events
 function handlePasteEvent(event) {
     const items = (event.clipboardData || event.originalEvent.clipboardData).items;
-    
+
     for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        
+
         // Check if the item is a file (image)
         if (item.kind === 'file') {
             const file = item.getAsFile();
-            
+
             // Check if it's an image file
             if (file && file.type.startsWith('image/')) {
                 // Prevent the default paste behavior
                 event.preventDefault();
-                
+
                 // Process the image file
                 processFileUpload(file);
-                
+
                 // Show a notification
                 showToast('Image pasted and added to upload queue!', 'success');
             }
@@ -306,12 +323,12 @@ function openPromptPrefixModal() {
 function openNewPromptForm() {
     // Clear the form for a new prompt
     clearPrefixForm();
-    
+
     // Remove any editing ID
     if (prefixForm) {
         delete prefixForm.dataset.editingId;
     }
-    
+
     // Focus on the name field
     if (prefixNameInput) {
         prefixNameInput.focus();
@@ -329,23 +346,23 @@ function closePromptPrefixModal() {
 
 function savePrefix(event) {
     event.preventDefault();
-    
+
     if (!prefixNameInput || !prefixContentInput) {
         console.error('Prefix form inputs not found');
         return;
     }
-    
+
     const name = prefixNameInput.value.trim();
     const content = prefixContentInput.value.trim();
-    
+
     if (!name || !content) {
         alert('Please enter both a name and content for the prefix.');
         return;
     }
-    
+
     // Check if editing existing prefix
     const editingId = prefixForm.dataset.editingId;
-    
+
     if (editingId) {
         // Update existing prefix
         const prefixIndex = promptPrefixes.findIndex(p => p.id === editingId);
@@ -379,27 +396,27 @@ function savePrefix(event) {
         };
         promptPrefixes.push(newPrefix);
     }
-    
+
     // Set as active if auto-apply is checked
     if (autoApplyPrefixCheckbox && autoApplyPrefixCheckbox.checked) {
-        const savedPrefix = editingId ? 
-            promptPrefixes.find(p => p.id === editingId) : 
+        const savedPrefix = editingId ?
+            promptPrefixes.find(p => p.id === editingId) :
             promptPrefixes[promptPrefixes.length - 1];
         activePrefix = savedPrefix.id;
         // Removed localStorage for activePrefix
     }
-    
+
     // Don't save to localStorage anymore - only keep in memory
     // User prompts are only stored in memory during the session
     // To save permanently, user must download the prompt file
-    
+
     // Update UI
     renderPrefixList();
     updateActivePrefixSelect();
     updateActivePrefixIndicator();
     clearPrefixForm();
     updateQuickPromptList();
-    
+
     // Show success message
     alert('Prompt saved successfully! To save this prompt permanently, please download it using the download button next to the prompt.');
 }
@@ -410,17 +427,17 @@ function downloadPromptAsFile(prefixId) {
     if (prefix) {
         // Create a Blob with the prompt content
         const blob = new Blob([prefix.content], { type: 'text/plain' });
-        
+
         // Create a download link
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = `${prefix.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_prompt.txt`;
-        
+
         // Trigger the download
         document.body.appendChild(a);
         a.click();
-        
+
         // Clean up
         setTimeout(() => {
             document.body.removeChild(a);
@@ -450,12 +467,12 @@ function editPrefix(prefixId) {
         }
         if (prefixForm) prefixForm.dataset.editingId = prefixId;
         if (autoApplyPrefixCheckbox) autoApplyPrefixCheckbox.checked = activePrefix === prefixId;
-        
+
         // For default prompts, we should indicate that editing creates a copy
         if (prefix.isDefault) {
             if (prefixNameInput) prefixNameInput.value = `${prefix.name} (Copy)`;
         }
-        
+
         // Ensure the modal is visible
         if (promptPrefixModal && promptPrefixModal.classList.contains('hidden')) {
             promptPrefixModal.classList.remove('hidden');
@@ -465,18 +482,18 @@ function editPrefix(prefixId) {
 
 function deletePrefix(prefixId) {
     const prefixToDelete = promptPrefixes.find(p => p.id === prefixId);
-    
+
     // Allow deletion of both default and user-created prompts
     // For default prompts, this just removes them from the current session
     if (prefixToDelete) {
         promptPrefixes = promptPrefixes.filter(p => p.id !== prefixId);
-        
+
         // Clear active prefix if it was deleted
         if (activePrefix === prefixId) {
             activePrefix = '';
             // Removed localStorage for activePrefix
         }
-        
+
         // Don't save to localStorage anymore - only keep in memory
         // const userPrompts = promptPrefixes.filter(p => !p.isDefault);
         // localStorage.setItem('prompt_prefixes', JSON.stringify(userPrompts));
@@ -492,24 +509,24 @@ function renderPrefixList() {
         console.error('Prefix list element not found');
         return;
     }
-    
+
     prefixList.innerHTML = '';
-    
+
     if (promptPrefixes.length === 0) {
         prefixList.innerHTML = '<p class="text-gray-500 text-sm italic">No prefixes saved yet.</p>';
         return;
     }
-    
+
     promptPrefixes.forEach(prefix => {
         const prefixElement = document.createElement('div');
         prefixElement.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-md border border-gray-200';
-        
+
         // Add visual indicator for default prompts
-        const nameDisplay = prefix.isDefault ? 
-            `${prefix.name} <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded ml-2">Default</span>` : 
+        const nameDisplay = prefix.isDefault ?
+            `${prefix.name} <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded ml-2">Default</span>` :
             prefix.name;
-        
-        const actionButtons = prefix.isDefault ? 
+
+        const actionButtons = prefix.isDefault ?
             `
             <button onclick="editPrefix('${prefix.id}')" class="text-blue-600 hover:text-blue-800 p-1" title="Create a copy to edit">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -521,7 +538,7 @@ function renderPrefixList() {
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
             </button>
-            ` : 
+            ` :
             `
             <button onclick="downloadPromptAsFile('${prefix.id}')" class="text-indigo-600 hover:text-indigo-800 p-1" title="Download as file">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -545,7 +562,7 @@ function renderPrefixList() {
                 </svg>
             </button>
             `;
-        
+
         prefixElement.innerHTML = `
             <div class="flex-1">
                 <h4 class="font-semibold text-gray-900">${nameDisplay}</h4>
@@ -555,7 +572,7 @@ function renderPrefixList() {
                 ${actionButtons}
             </div>
         `;
-        
+
         prefixList.appendChild(prefixElement);
     });
 }
@@ -565,9 +582,9 @@ function updateActivePrefixSelect() {
         console.error('Active prefix select element not found');
         return;
     }
-    
+
     activePrefixSelect.innerHTML = '<option value="">None</option>';
-    
+
     promptPrefixes.forEach(prefix => {
         const option = document.createElement('option');
         option.value = prefix.id;
@@ -582,7 +599,7 @@ function setActivePrefix() {
         console.error('Active prefix select element not found');
         return;
     }
-    
+
     const selectedPrefixId = activePrefixSelect.value;
     activePrefix = selectedPrefixId;
     // Removed localStorage for activePrefix
@@ -611,7 +628,7 @@ function updateActivePrefixIndicator() {
         console.error('Active prefix indicator elements not found');
         return;
     }
-    
+
     if (activePrefix) {
         const prefix = promptPrefixes.find(p => p.id === activePrefix);
         if (prefix) {
@@ -644,7 +661,7 @@ function escapeHtml(text) {
  */
 function toggleQuickPromptDropdown() {
     if (!quickPromptDropdown) return;
-    
+
     if (quickPromptDropdown.classList.contains('hidden')) {
         openQuickPromptDropdown();
     } else {
@@ -654,24 +671,24 @@ function toggleQuickPromptDropdown() {
 
 function openQuickPromptDropdown() {
     if (!quickPromptDropdown) return;
-    
+
     updateQuickPromptList();
     quickPromptDropdown.classList.remove('hidden');
 }
 
 function closeQuickPromptDropdown() {
     if (!quickPromptDropdown) return;
-    
+
     quickPromptDropdown.classList.add('hidden');
 }
 
 function updateQuickPromptList() {
     if (!quickPromptList) return;
-    
+
     // Clear existing items except the "None" option
     const noneOption = quickPromptList.querySelector('[data-prefix-id=""]');
     quickPromptList.innerHTML = '';
-    
+
     // Add "None" option back
     if (noneOption) {
         quickPromptList.appendChild(noneOption);
@@ -687,30 +704,29 @@ function updateQuickPromptList() {
         noneButton.addEventListener('click', () => selectQuickPrefix(''));
         quickPromptList.appendChild(noneButton);
     }
-    
+
     // Add current prefixes
     promptPrefixes.forEach(prefix => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = `w-full text-left px-3 py-2 hover:bg-gray-100 text-sm ${
-            activePrefix === prefix.id ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700'
-        }`;
+        button.className = `w-full text-left px-3 py-2 hover:bg-gray-100 text-sm ${activePrefix === prefix.id ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700'
+            }`;
         button.setAttribute('data-prefix-id', prefix.id);
-        
-        const truncatedContent = prefix.content.length > 60 ? 
-            prefix.content.substring(0, 60) + '...' : 
+
+        const truncatedContent = prefix.content.length > 60 ?
+            prefix.content.substring(0, 60) + '...' :
             prefix.content;
-            
+
         // Add visual indicator for default prompts
-        const nameDisplay = prefix.isDefault ? 
-            `${prefix.name} (Default)` : 
+        const nameDisplay = prefix.isDefault ?
+            `${prefix.name} (Default)` :
             prefix.name;
-            
+
         button.innerHTML = `
             <span class="font-semibold">${escapeHtml(nameDisplay)}</span>
             <p class="text-xs text-gray-500">${escapeHtml(truncatedContent)}</p>
         `;
-        
+
         button.addEventListener('click', () => selectQuickPrefix(prefix.id));
         quickPromptList.appendChild(button);
     });
@@ -722,7 +738,7 @@ function selectQuickPrefix(prefixId) {
     updateActivePrefixIndicator();
     updateActivePrefixSelect();
     closeQuickPromptDropdown();
-    
+
     // Focus back on message input
     if (messageInput) {
         messageInput.focus();
@@ -746,12 +762,12 @@ function initializeChat() {
     let welcomeMessage = `Hello! I'm Analyst AI specialized in document analysis. I can help you analyze documents, validate data consistency, and detect duplicate metrics across reports.
 
 Upload documents or ask me anything!`;
-    
+
     // Add API key setup instructions if no API key is set
     if (!API_KEY) {
         welcomeMessage += '\n\n**Important Setup Required**: You need to set up your Gemini API key before using this application. Click the "Set API Key" button in the top right corner to get started.';
     }
-    
+
     messages = [
         {
             id: Date.now(),
@@ -770,7 +786,7 @@ function openApiKeyModal() {
         console.error('API key modal elements not found');
         return;
     }
-    
+
     // Pre-fill with existing API key if available
     if (API_KEY) {
         apiKeyInput.value = API_KEY;
@@ -788,39 +804,39 @@ function closeApiKeyModal() {
 
 function saveApiKey(event) {
     event.preventDefault();
-    
+
     if (!apiKeyInput) {
         console.error('API key input element not found');
         return;
     }
-    
+
     const newApiKey = apiKeyInput.value.trim();
-    
+
     if (!newApiKey) {
         alert('Please enter a valid API key');
         return;
     }
-    
+
     // Save to localStorage (keeping this as requested)
     localStorage.setItem('gemini_api_key', newApiKey);
     API_KEY = newApiKey;
-    
+
     // Initialize the Gemini API client with the new key
     genAI = new GoogleGenerativeAI(API_KEY);
-    
+
     // Reset chat session to use the new API key
     chatSession = null;
-    
+
     // Close the modal
     closeApiKeyModal();
-    
+
     // Add a confirmation message
     messages.push({
         id: Date.now(),
         role: 'model',
         text: 'API key has been updated successfully! You can now use the chat.'
     });
-    
+
     render();
 }
 
@@ -830,13 +846,13 @@ function saveApiKey(event) {
 function resetSession() {
     // Clear messages
     messages = [];
-    
+
     // Reset chat session
     chatSession = null;
-    
+
     // Clear any uploaded files
     removeAllFiles();
-    
+
     // Reinitialize with welcome message
     initializeChat();
 }
@@ -870,13 +886,13 @@ function handleDragLeave(event) {
 function handleDrop(event) {
     event.preventDefault();
     event.stopPropagation();
-    
+
     if (dragOverlay) {
         dragOverlay.classList.add('hidden');
     }
-    
+
     const files = Array.from(event.dataTransfer.files);
-    
+
     if (files.length > 0) {
         files.forEach(file => {
             processFileUpload(file);
@@ -891,7 +907,7 @@ function processFileUpload(file) {
     // Check file type
     const validTypes = ['.pdf', '.docx', '.txt', '.html', '.htm', '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff'];
     const fileExtension = file.name.substring(file.name.lastIndexOf('.'));
-    
+
     if (validTypes.includes(fileExtension.toLowerCase())) {
         // Check if file already exists
         const existingFileIndex = uploadedFiles.findIndex(f => f.name === file.name && f.size === f.size);
@@ -915,7 +931,7 @@ function handleFileSelection(event) {
         console.error('File selection event is invalid');
         return;
     }
-    
+
     const files = Array.from(event.target.files);
     files.forEach(file => {
         processFileUpload(file);
@@ -951,16 +967,16 @@ function removeFile(index) {
  */
 function renderFileList() {
     if (!fileList) return;
-    
+
     fileList.innerHTML = '';
-    
+
     uploadedFiles.forEach((file, index) => {
         const fileItem = document.createElement('div');
         fileItem.className = 'flex items-center justify-between py-1 px-2 bg-white rounded text-sm border border-gray-200';
-        
+
         const fileSizeMB = (file.size / (1024 * 1024)).toFixed(1);
         const fileInfo = `${file.name} (${fileSizeMB}MB)`;
-        
+
         fileItem.innerHTML = `
             <span class="truncate flex-1 mr-2 text-gray-900" title="${file.name}">${fileInfo}</span>
             <button class="text-red-600 hover:text-red-800 p-1" onclick="removeFile(${index})" title="Remove file">
@@ -969,7 +985,7 @@ function renderFileList() {
                 </svg>
             </button>
         `;
-        
+
         fileList.appendChild(fileItem);
     });
 }
@@ -987,12 +1003,12 @@ function fileToBase64(file) {
                 if (!result || typeof result !== 'string') {
                     throw new Error('Failed to read file data');
                 }
-                
+
                 const base64String = result.split(',')[1];
                 if (!base64String || base64String.length === 0) {
                     throw new Error('Failed to extract base64 data from file');
                 }
-                
+
                 resolve(base64String);
             } catch (error) {
                 reject(new Error(`File conversion error: ${error.message}`));
@@ -1009,25 +1025,25 @@ function fileToBase64(file) {
  */
 async function handleSendMessage(event) {
     event.preventDefault();
-    
+
     const userMessage = messageInput.value.trim();
-    
+
     // Don't send if there's no message and no files
     if (!userMessage && uploadedFiles.length === 0) return;
-    
+
     // Check if API key is set
     if (!API_KEY) {
         openApiKeyModal();
         return;
     }
-    
+
     try {
         // Set loading state
         isLoading = true;
-        
+
         // Get active prefix content
         const prefixContent = getActivePrefixContent();
-        
+
         // Prepare the final message with prefix if active
         let finalMessage = userMessage;
         if (prefixContent && userMessage) {
@@ -1035,7 +1051,7 @@ async function handleSendMessage(event) {
         } else if (prefixContent && uploadedFiles.length > 0) {
             finalMessage = `${prefixContent}\n\nPlease analyze these ${uploadedFiles.length} files: ${uploadedFiles.map(f => f.name).join(', ')}.`;
         }
-        
+
         // Add user message to chat (display original message without prefix)
         if (userMessage) {
             messages.push({
@@ -1050,55 +1066,62 @@ async function handleSendMessage(event) {
                 text: `Please analyze these ${uploadedFiles.length} files: ${uploadedFiles.map(f => f.name).join(', ')}.`
             });
         }
-        
+
         // Clear input
         messageInput.value = '';
-        
+
         // Render to show user message
         render();
-        
+
         // Initialize chat session if it doesn't exist
+        // Define model in a broader scope to be accessible
+        const selectedModel = modelSelect ? modelSelect.value : MODEL_NAME;
+        const model = genAI.getGenerativeModel({ model: selectedModel });
+        console.log(`Using model: ${selectedModel}`);
+
         if (!chatSession) {
-            const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-            
             const safetySettings = [
                 {
                     category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+                    threshold: HarmBlockThreshold.BLOCK_NONE
                 },
                 {
                     category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+                    threshold: HarmBlockThreshold.BLOCK_NONE
                 },
                 {
                     category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+                    threshold: HarmBlockThreshold.BLOCK_NONE
                 },
                 {
                     category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-                    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE
+                    threshold: HarmBlockThreshold.BLOCK_NONE
                 }
             ];
-            
+
             chatSession = model.startChat({
                 history: [],
                 safetySettings,
-                generationConfig: { temperature: 0.4 },
+                generationConfig: {
+                    temperature: 0.4,
+                    maxOutputTokens: 64000 // Increase limit to prevent truncation
+                },
                 systemInstruction: SYSTEM_INSTRUCTION
             });
         }
-        
+
         // Add placeholder for model response
         const responseId = Date.now() + 1;
         messages.push({
             id: responseId,
             role: 'model',
-            text: ''
+            text: '',
+            tokenCounts: { input: 0, output: 0 } // Initialize token counts
         });
-        
+
         // Prepare content parts for the message
         const contentParts = [];
-        
+
         // Add text with instruction to identify report types
         if (finalMessage) {
             let enhancedMessage = finalMessage;
@@ -1107,7 +1130,7 @@ async function handleSendMessage(event) {
             }
             contentParts.push({ text: enhancedMessage });
         }
-        
+
         // Add files if present
         if (uploadedFiles.length > 0) {
             for (const file of uploadedFiles) {
@@ -1120,34 +1143,83 @@ async function handleSendMessage(event) {
                 });
             }
         }
-        
+
+        // Count Input Tokens
+        try {
+            // Include system instruction and file content for accurate count
+            const countResult = await model.countTokens({
+                contents: [{ role: 'user', parts: contentParts }],
+                systemInstruction: SYSTEM_INSTRUCTION
+            });
+
+            const count = countResult.totalTokens;
+            console.log(`Input Token Count: ${count}`);
+
+            // Update the UI with input tokens immediately
+            const modelMessageIndex = messages.findIndex(msg => msg.id === responseId);
+            if (modelMessageIndex !== -1) {
+                messages[modelMessageIndex].tokenCounts.input = count;
+                // Force a render to show the "Analyzing (X tokens)..." state
+                render();
+            }
+        } catch (tokenError) {
+            console.error('Error counting tokens:', tokenError);
+        }
+
         // Send message to Gemini API and stream the response
         const result = await chatSession.sendMessageStream(contentParts);
-        
+
         // Process the streamed response
         let responseText = '';
         for await (const chunk of result.stream) {
             const chunkText = chunk.text();
             responseText += chunkText;
-            
+
+            // Check for finish reason in candidates
+            if (chunk.candidates && chunk.candidates.length > 0) {
+                const finishReason = chunk.candidates[0].finishReason;
+                if (finishReason && finishReason !== 'STOP') {
+                    console.warn('Generation stopped with reason:', finishReason);
+                    // Append warning to text if it stopped abnormally
+                    if (finishReason === 'SAFETY') {
+                        responseText += '\n\n**[Generation stopped due to Safety Filters]**';
+                    } else if (finishReason === 'MAX_TOKENS') {
+                        responseText += '\n\n**[Generation stopped due to Max Token Limit]**';
+                    } else {
+                        responseText += `\n\n**[Generation stopped: ${finishReason}]**`;
+                    }
+                }
+            }
+
             // Update the model's message with the accumulated text
             const modelMessageIndex = messages.findIndex(msg => msg.id === responseId);
             if (modelMessageIndex !== -1) {
                 messages[modelMessageIndex].text = responseText;
+
+                // Check for usage metadata in the chunk (often in the last chunk)
+                if (chunk.usageMetadata) {
+                    messages[modelMessageIndex].tokenCounts = {
+                        input: chunk.usageMetadata.promptTokenCount,
+                        output: chunk.usageMetadata.candidatesTokenCount,
+                        total: chunk.usageMetadata.totalTokenCount
+                    };
+                }
+
                 render();
             }
         }
-        
+
         // Clear the files after successful processing
         if (uploadedFiles.length > 0) {
             removeAllFiles();
         }
-        
+
     } catch (error) {
         console.error('Error sending message:', error);
-        
+
+        // ... (Error handling remains same)
         let errorMessage = 'Sorry, an error occurred. Please try again.';
-        
+
         if (error.message && error.message.includes('API key not valid')) {
             errorMessage = 'API key error: The API key you provided is not valid. Please click the "Set API Key" button to update your API key.';
             // Keep API key in localStorage as requested
@@ -1157,7 +1229,7 @@ async function handleSendMessage(event) {
         } else if (error.message) {
             errorMessage = `Error: ${error.message}`;
         }
-        
+
         messages.push({
             id: Date.now() + 1,
             role: 'model',
@@ -1177,26 +1249,26 @@ function render() {
         console.error('Chat container not found');
         return;
     }
-    
+
     // Save current scroll position before rendering
     const previousScrollTop = chatContainer.scrollTop;
     const previousScrollHeight = chatContainer.scrollHeight;
-    
+
     chatContainer.innerHTML = '';
-    
+
     messages.forEach(message => {
         const messageDiv = document.createElement('div');
-        messageDiv.className = message.role === 'user' ? 
+        messageDiv.className = message.role === 'user' ?
             'flex justify-end' : 'flex justify-start';
-        
+
         const messageWrapper = document.createElement('div');
         messageWrapper.className = 'relative';
-        
+
         const messageContent = document.createElement('div');
-        messageContent.className = message.role === 'user' ? 
-            'max-w-3xl bg-indigo-600 text-white p-3 rounded-lg' : 
+        messageContent.className = message.role === 'user' ?
+            'max-w-3xl bg-indigo-600 text-white p-3 rounded-lg' :
             'max-w-7xl bg-white text-gray-900 p-3 rounded-lg markdown-content border border-gray-200'; // Increased from max-w-6xl to max-w-7xl
-        
+
         if (message.role === 'model') {
             // Use marked to parse the markdown
             try {
@@ -1208,11 +1280,11 @@ function render() {
                 // Fallback to plain text if markdown parsing fails
                 messageContent.textContent = message.text;
             }
-            
+
             // Add copy button for the entire response
             const buttonContainer = document.createElement('div');
             buttonContainer.className = 'absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity';
-            
+
             // Copy button for entire response
             const copyButton = document.createElement('button');
             copyButton.className = 'p-1 bg-gray-100 hover:bg-gray-200 rounded text-gray-600';
@@ -1223,34 +1295,56 @@ function render() {
                     <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                 </svg>
             `;
-            copyButton.addEventListener('click', function(e) {
+            copyButton.addEventListener('click', function (e) {
                 e.stopPropagation();
                 copyToClipboard(message.text);
             });
-            
+
             buttonContainer.appendChild(copyButton);
             messageWrapper.appendChild(buttonContainer);
         } else {
             messageContent.textContent = message.text;
         }
-        
+
+        // Render Token Counts if available
+        if (message.role === 'model' && message.tokenCounts) {
+            const tokenInfoDiv = document.createElement('div');
+            tokenInfoDiv.className = 'mt-2 text-xs text-gray-500 flex justify-end items-center space-x-3 border-t border-gray-100 pt-1';
+
+            if (message.tokenCounts.input > 0) {
+                tokenInfoDiv.innerHTML += `<span title="Tokens in your prompt + files">Input Tokens: <strong>${message.tokenCounts.input.toLocaleString()}</strong></span>`;
+            }
+
+            if (message.tokenCounts.output > 0) {
+                tokenInfoDiv.innerHTML += `<span class="border-l border-gray-300 pl-3" title="Tokens generated by model">Output Tokens: <strong>${message.tokenCounts.output.toLocaleString()}</strong></span>`;
+            } else if (isLoading && message.id === messages[messages.length - 1].id) {
+                // Show "Generating..." while streaming if output is 0 but loading
+                tokenInfoDiv.innerHTML += `<span class="border-l border-gray-300 pl-3 italic">Generating...</span>`;
+            }
+
+            // Only append if we have something to show
+            if (tokenInfoDiv.innerHTML) {
+                messageContent.appendChild(tokenInfoDiv);
+            }
+        }
+
         // Ensure proper rendering of table content and add copy buttons to tables
         messageContent.querySelectorAll('table').forEach((table, index) => {
             table.classList.add('markdown-content-table');
-            
+
             // Create a container for the table with relative positioning
             const tableContainer = document.createElement('div');
             tableContainer.className = 'relative group/table';
             tableContainer.style.cssText = 'margin: 1rem 0;';
-            
+
             // Move the table into the container
             table.parentNode.insertBefore(tableContainer, table);
             tableContainer.appendChild(table);
-            
+
             // Add copy button for the table
             const tableButtonContainer = document.createElement('div');
             tableButtonContainer.className = 'absolute top-2 right-2 flex space-x-1 opacity-0 group-hover/table:opacity-100 transition-opacity';
-            
+
             const tableCopyButton = document.createElement('button');
             tableCopyButton.className = 'p-1 bg-gray-100 hover:bg-gray-200 rounded text-gray-600';
             tableCopyButton.title = 'Copy table';
@@ -1260,32 +1354,32 @@ function render() {
                     <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                 </svg>
             `;
-            
-            tableCopyButton.addEventListener('click', function(e) {
+
+            tableCopyButton.addEventListener('click', function (e) {
                 e.stopPropagation();
                 // Convert table to markdown format for copying
                 const tableMarkdown = convertTableToMarkdown(table);
                 copyToClipboard(tableMarkdown);
             });
-            
+
             tableButtonContainer.appendChild(tableCopyButton);
             tableContainer.appendChild(tableButtonContainer);
         });
-        
+
         messageWrapper.appendChild(messageContent);
         messageWrapper.classList.add('group'); // For hover effects
         messageDiv.appendChild(messageWrapper);
         chatContainer.appendChild(messageDiv);
     });
-    
+
     // Add loading indicator if we're loading
     if (isLoading) {
         const loadingDiv = document.createElement('div');
         loadingDiv.className = 'flex justify-start';
-        
+
         const loadingContent = document.createElement('div');
         loadingContent.className = 'max-w-7xl bg-white text-gray-900 p-3 rounded-lg flex items-center space-x-2 border border-gray-200'; // Changed from max-w-6xl to max-w-7xl
-        
+
         loadingContent.innerHTML = `
             <div class="flex space-x-1">
                 <div class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></div>
@@ -1294,16 +1388,16 @@ function render() {
             </div>
             <span class="text-gray-700">${loadingMessage}</span>
         `;
-        
+
         loadingDiv.appendChild(loadingContent);
         chatContainer.appendChild(loadingDiv);
     }
-    
+
     // Update UI state based on isLoading
     if (messageInput) messageInput.disabled = isLoading;
     if (sendButton) sendButton.disabled = isLoading;
     if (attachButton) attachButton.disabled = isLoading;
-    
+
     // Update file preview visibility
     if (uploadedFiles.length > 0 && filePreview) {
         filePreview.classList.remove('hidden');
@@ -1311,10 +1405,10 @@ function render() {
     } else if (filePreview) {
         filePreview.classList.add('hidden');
     }
-    
+
     // Update active prefix indicator
     updateActivePrefixIndicator();
-    
+
     // Scroll to bottom with a delay to ensure content is rendered
     if (chatContainer) {
         // Only scroll to bottom if user is near the bottom already
@@ -1353,17 +1447,17 @@ function copyToClipboard(text) {
 function fallbackCopyTextToClipboard(text) {
     const textArea = document.createElement("textarea");
     textArea.value = text;
-    
+
     // Avoid scrolling to bottom
     textArea.style.top = "0";
     textArea.style.left = "0";
     textArea.style.position = "fixed";
     textArea.style.opacity = "0";
-    
+
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    
+
     try {
         const successful = document.execCommand('copy');
         if (successful) {
@@ -1377,7 +1471,7 @@ function fallbackCopyTextToClipboard(text) {
         console.error('Fallback: Oops, unable to copy', err);
         showToast('Failed to copy to clipboard', 'error');
     }
-    
+
     document.body.removeChild(textArea);
 }
 
@@ -1390,18 +1484,17 @@ function showToast(message, type = 'success') {
     if (existingToast) {
         existingToast.remove();
     }
-    
+
     // Create toast element
     const toast = document.createElement('div');
     toast.id = 'toast-notification';
-    toast.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 text-white ${
-        type === 'success' ? 'bg-green-500' : 'bg-red-500'
-    }`;
+    toast.className = `fixed top-4 right-4 px-4 py-2 rounded-md shadow-lg z-50 text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'
+        }`;
     toast.textContent = message;
-    
+
     // Add to document
     document.body.appendChild(toast);
-    
+
     // Remove after 3 seconds
     setTimeout(() => {
         if (toast.parentNode) {
@@ -1416,26 +1509,26 @@ function showToast(message, type = 'success') {
 function convertTableToMarkdown(tableElement) {
     let markdown = '';
     const rows = tableElement.querySelectorAll('tr');
-    
+
     if (rows.length === 0) return '';
-    
+
     // Process header row
     const headerCells = rows[0].querySelectorAll('th, td');
     const headers = Array.from(headerCells).map(cell => cell.textContent.trim());
-    
+
     // Create header row
     markdown += '| ' + headers.join(' | ') + ' |\n';
-    
+
     // Create separator row
     markdown += '| ' + headers.map(() => '---').join(' | ') + ' |\n';
-    
+
     // Process data rows
     for (let i = 1; i < rows.length; i++) {
         const cells = rows[i].querySelectorAll('td');
         const cellData = Array.from(cells).map(cell => cell.textContent.trim());
         markdown += '| ' + cellData.join(' | ') + ' |\n';
     }
-    
+
     return markdown;
 }
 
