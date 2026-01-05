@@ -4,7 +4,7 @@
       "id": "esg-metrics-1",
       "name": "ESG 2025",
       "file": "esg_2025.txt",
-      "description": description": "Analyze all ESG metrics in documents for 2025
+      "description": description": "Analyze all ESG metrics in documents for 2025"
     },
     {
       "id": "esg-metrics-2",
@@ -26,5 +26,6 @@
     }
   ]
 }
+
 
 
